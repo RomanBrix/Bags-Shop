@@ -1,0 +1,33 @@
+
+.pagination{
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    list-style: none;
+    padding: 0;
+
+
+    .page-link{
+        user-select: none;
+        width: 26px;
+        height: 26px;
+        box-sizing: border-box;
+        border: 1px solid transparent;
+        display: flex;
+        font-size: 19px;
+        align-items: center;
+        justify-content: center;
+        margin-right: 20px;
+        cursor: pointer;
+        transition: .25s;
+        &:hover{
+            color: $active-color;
+            border-color: $active-color;
+        }
+    }
+    .active-pag{
+        .page-link{
+            border-color: black;
+        }
+    }
+}

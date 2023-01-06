@@ -1,0 +1,325 @@
+[
+   [
+    {
+        "id": 1,
+        "title": "Bags 1",
+        "img": "/src/1.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 1500,
+        "brand": "Bags brand 1",
+        "type": "bags",
+        "variantImg": ["/src/1.jfif", "/src/2.jfif"],
+        "variantInfo": ["Bags 1 [BLACK]", "Bags 1 [WHITE]"],
+        "additional_info":{
+            "height": "22см",
+            "width": "20см",
+            "bottomWidth": "16см",
+            "handleLength": "55см",
+            "producingCountry": "Гандурас",
+            "material": "шкірка вепра"
+        }
+    },
+    {
+        "id": 2,
+        "title": "Bags 2",
+        "img": "/src/2.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 3500,
+        "brand": "Bags brand 2",
+        "type": "bags",
+        "variantImg": ["/src/2.jfif", "/src/14.jfif"],
+        "variantInfo": ["Bags 2 [BLACK]", "Bags 2 [WHITE]"],
+        "additional_info":{
+            "height": "22см",
+            "width": "20см",
+            "bottomWidth": "16см",
+            "handleLength": "55см",
+            "producingCountry": "Гандурас",
+            "material": "шкірка вепра"
+        }
+    },
+    {
+        "id": 3,
+        "title": "Bags 3",
+        "img": "/src/3.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 4500,
+        "brand": "Bags brand 3",
+        "type": "bags"
+    },
+    {
+        "id": 4,
+        "title": "Bags 4",
+        "img": "/src/4.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 5500,
+        "brand": "Bags brand 4",
+        "type": "bags"
+    },
+    {
+        "id": 5,
+        "title": "Bags 5",
+        "img": "/src/5.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 6500,
+        "brand": "Bags brand 5",
+        "type": "bags"
+    },
+    {
+        "id": 6,
+        "title": "Bags 6",
+        "img": "/src/6.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 7500,
+        "brand": "Bags brand 6",
+        "type": "bags"
+    },
+    {
+        "id": 7,
+        "title": "Bags 7",
+        "img": "/src/7.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 8500,
+        "brand": "Bags brand 7",
+        "type": "bags"
+    },
+    {
+        "id": 8,
+        "title": "Bags 8",
+        "img": "/src/8.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 9500,
+        "brand": "Bags brand 8",
+        "type": "bags"
+    },
+    {
+        "id": 9,
+        "title": "Bags 9",
+        "img": "/src/9.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Bags brand 9",
+        "type": "bags"
+    },
+    {
+        "id": 10,
+        "title": "Bags 10",
+        "img": "/src/10.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 12500,
+        "brand": "Bags brand 10",
+        "type": "bags"
+    }
+   ],
+   [
+    {
+        "id": 11,
+        "title": "Backpacks 1",
+        "img": "/src/1.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 12500,
+        "brand": "Backpacks brand 1",
+        "type": "backpacks"
+    },
+    {
+        "id": 12,
+        "title": "Backpacks 2",
+        "img": "/src/2.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 12500,
+        "brand": "Backpacks brand 2",
+        "type": "backpacks"
+    },
+    {
+        "id": 13,
+        "title": "Backpacks 3",
+        "img": "/src/3.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 32500,
+        "brand": "Backpacks brand 3",
+        "type": "backpacks"
+    },
+    {
+        "id": 14,
+        "title": "Backpacks 4",
+        "img": "/src/4.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 42500,
+        "brand": "Backpacks brand 4",
+        "type": "backpacks"
+    },
+    {
+        "id": 15,
+        "title": "Backpacks 5",
+        "img": "/src/5.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 52500,
+        "brand": "Backpacks brand 5",
+        "type": "backpacks"
+    },
+    {
+        "id": 16,
+        "title": "Backpacks 6",
+        "img": "/src/6.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 62500,
+        "brand": "Backpacks brand 6",
+        "type": "backpacks"
+    },
+    {
+        "id": 17,
+        "title": "Backpacks 7",
+        "img": "/src/7.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 72500,
+        "brand": "Backpacks brand 7",
+        "type": "backpacks"
+    },
+    {
+        "id": 18,
+        "title": "Backpacks 8",
+        "img": "/src/8.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 32500,
+        "brand": "Backpacks brand 8",
+        "type": "backpacks"
+    },
+    {
+        "id": 19,
+        "title": "Backpacks 9",
+        "img": "/src/9.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Backpacks brand 9",
+        "type": "backpacks"
+    },
+    {
+        "id": 20,
+        "title": "Backpacks 10",
+        "img": "/src/10.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Backpacks brand 10",
+        "type": "backpacks"
+    },
+    {
+        "id": 21,
+        "title": "Backpacks 11",
+        "img": "/src/10.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Backpacks brand 11",
+        "type": "backpacks"
+    },
+    {
+        "id": 22,
+        "title": "Backpacks 12",
+        "img": "/src/10.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Backpacks brand 12",
+        "type": "backpacks"
+    },
+    {
+        "id": 23,
+        "title": "Backpacks 13",
+        "img": "/src/10.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Backpacks brand 13",
+        "type": "backpacks"
+    }
+   ],
+   [
+    {
+        "id": 24,
+        "title": "Wallets 1",
+        "img": "/src/1.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 1",
+        "type": "wallets"
+    },
+    {
+        "id": 25,
+        "title": "Wallets 2",
+        "img": "/src/2.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 2",
+        "type": "wallets"
+    },
+    {
+        "id": 26,
+        "title": "Wallets 3",
+        "img": "/src/3.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 3",
+        "type": "wallets"
+    },
+    {
+        "id": 27,
+        "title": "Wallets 4",
+        "img": "/src/4.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 4",
+        "type": "wallets"
+    },
+    {
+        "id": 28,
+        "title": "Wallets 5",
+        "img": "/src/5.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 5",
+        "type": "wallets"
+    },
+    {
+        "id": 29,
+        "title": "Wallets 6",
+        "img": "/src/6.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 6",
+        "type": "wallets"
+    },
+    {
+        "id": 30,
+        "title": "Wallets 7",
+        "img": "/src/7.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 7",
+        "type": "wallets"
+    },
+    {
+        "id": 31,
+        "title": "Wallets 8",
+        "img": "/src/8.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 8",
+        "type": "wallets"
+    },
+    {
+        "id": 32,
+        "title": "Wallets 9",
+        "img": "/src/9.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 9",
+        "type": "wallets"
+    },
+    {
+        "id": 33,
+        "title": "Wallets 10",
+        "img": "/src/10.jfif",
+        "info": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Sequi, culpa?",
+        "price": 2500,
+        "brand": "Wallets brand 10",
+        "type": "wallets"
+    }
+   ]
+]

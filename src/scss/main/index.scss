@@ -1,0 +1,160 @@
+.intro{
+        background-repeat: no-repeat;
+        background-position: center center;
+        -webkit-background-size: cover;
+        -moz-background-size: cover;
+        -o-background-size: cover;
+        background-size: cover;
+        background-attachment: fixed;
+        height: 95vh;
+        position: relative;
+        &::before{
+            content: '';
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            // background: rgba($color: #000000, $alpha: .05);
+        }
+        .container{
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: space-around;
+            .top{
+                text-align: center;
+                h1{
+                    font-size: 8em;
+                    font-weight: 400;
+                    margin-top: 0;
+                    margin-bottom: 0;
+                }
+                h2{
+                    font-size: 5em;
+                    font-weight: 300;
+                    margin-top: 0;
+                    // margin-bottom: 0;
+                }
+            }
+            .btn{
+                background: #fff;
+                padding: 12px 25px;
+                cursor: pointer;
+                span{
+                    padding: 4px 11px;
+                    width: 72px;
+                    box-sizing: border-box;
+                    // background: red;
+                    // color: #fff;
+                    z-index: 1;
+                    transition: .25s;
+                    position: relative;
+                    text-align: center;
+                    display: inline-block;
+                    &:first-child{
+                        
+                        color: #fff;
+                    // background: green;
+
+                        &::before{
+                            content: '';
+                            position: absolute;
+                            width: 100%;
+                            height: 100%;
+                            left: 0px;
+                            top: 0;
+                            background: #000;
+                            z-index: -1;
+                            transition: .25s;
+                        }
+                    }
+                }
+
+                &:hover{
+                    span:first-child{
+                        color: #000;
+                        &::before{
+                            left: 72px;
+                        }
+                    }
+                    span:last-child{
+                        color: #fff;
+                    }
+                }
+            }
+            @media (max-width:767px){
+                .top{
+                    text-align: center;
+                    h1{
+                        font-size: 5em;
+                        font-weight: 400;
+                        margin-top: 0;
+                        margin-bottom: 0;
+                    }
+                    h2{
+                        font-size: 3em;
+                        font-weight: 300;
+                        margin-top: 0;
+                        // margin-bottom: 0;
+                    }
+                }
+            }
+        }
+        
+}
+
+
+.plus-intro{
+    margin-top: 35px;
+    margin-bottom: 35px;
+    .container{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        .block{
+            width: 30%;
+            height: 600px;
+            background-repeat: no-repeat;
+            background-position: center center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+            // background-attachment: fixed;
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            p{
+                font-size: 2em;
+                font-weight: 300;
+                padding: 4px 10px;
+                background: rgba($color: #000000, $alpha: .6);
+                color: #fff;  
+                text-align: center;
+                transition: .25s;
+
+                
+            }
+
+            &:hover{
+                p{
+                    color: rgba($color: #000000, $alpha: .6);
+                background: #fff;
+                }
+            }
+        }
+        @media (max-width:767px){
+            flex-direction: column;
+            justify-content: center;
+            .block{
+                width: 100%;
+                margin-right: 0;
+                margin-bottom: 15px;
+            }
+        }
+    }
+}

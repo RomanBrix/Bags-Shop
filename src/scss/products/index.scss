@@ -1,0 +1,118 @@
+.product {
+  .container {
+    display: flex;
+    align-items: stretch;
+    padding: 30px 0;
+
+    @import "./filters.scss";
+
+    .btn-filters{
+      padding: 3px 10px;
+      display: none;
+      text-align: center;
+      border: 1px solid #000;
+      margin-bottom: 10px;
+      // float: left;
+    }
+    .products-container {
+      width: calc(100% - 300px);
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      justify-content: space-between;
+      .products-block {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: space-between;
+
+        .block {
+          width: 300px;
+          height: 400px;
+          margin-bottom: 15px;
+          border: 1px solid #1d2120;
+          display: flex;
+          box-sizing: border-box;
+          flex-direction: column;
+          align-items: flex-start;
+          justify-content: space-between;
+          cursor: pointer;
+          transition: .25s;
+          *{
+              transition: .25s;
+          }
+          &:hover{
+              .img{
+                  img{
+                      transform: scale(1.1);
+                  }
+              }
+          }
+          .img {
+            width: 100%;
+            max-height: 75%;
+            overflow: hidden;
+            img,
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
+          h3 {
+            padding-left: 10px;
+            margin-bottom: 10px;
+            font-size: 18px;
+            font-weight: normal;
+            letter-spacing: 2px;
+          }
+          p {
+            padding: 0;
+            padding-left: 10px;
+            margin: 0;
+            margin-bottom: 15px;
+            font-size: 20px;
+            font-weight: 500;
+          }
+        }
+      }
+    }
+    @media (max-width:1023px){
+        
+      padding: 30px 30px !important;
+      .products-container{
+        .products-block{
+          justify-content: center;
+          .block{
+            margin-right: 0;
+          }
+        }
+      }
+  
+    }
+    @media (max-width:767px){
+      .btn-filters{
+        display: block;
+      }
+      .products-container {
+        width: 100%;
+        justify-content: flex-start;
+        align-items: flex-end;
+
+        .products-block{
+          width: 100%;
+          .block{
+            width: 100%;
+            margin-right: 0;
+            height: auto;
+          }
+        }
+        .pagination{
+          justify-self: center;
+          align-self: center;
+        }
+      }
+    }
+  }
+}
+
+@import "./pagination.scss";
+@import './singleProduct.scss';

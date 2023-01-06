@@ -1,0 +1,71 @@
+.filters{
+    width: 300px;
+    .filter-container{
+        .filters-cancel{
+            display: none;
+        }
+        // overflow: auto;
+        // transition: .25s;
+        // height: 410px;
+        padding-right: 15px;
+        *{transition: .25s;}
+        .option{
+            margin-bottom: 6px;
+            label, input{
+                font-size: 18px;
+                cursor: pointer;
+                &:hover{
+                    color: $active-color;
+                }
+            }
+            input{
+                margin-right: 6px;
+            }
+        }
+
+        
+
+        .price{
+            p{
+                span{
+                    margin: 0 5px;
+                    padding: 3px 6px;
+                    border: 1px solid #000;
+                }
+            }
+            .MuiSlider-colorPrimary{
+                width: 100%;
+            }
+        }
+    }
+    @media (max-width:767px){
+        width: 0;
+        position: relative;
+        .filter-container{
+            // display: none;
+            position: fixed;
+            width: 100%;
+            box-sizing: border-box;
+            left: -100%;
+            top: 0;
+            padding: 15px;
+            background: #fff;
+            z-index: 9999999;
+            transition: .25s;
+            opacity: 0;
+            .filters-cancel{
+                display: block;
+                width: 22px;
+                height: 22px;
+                position: absolute;
+                right: 20px;
+                top: 20px;
+            }
+        }
+        .filter-container-active{
+            left: 0;
+            opacity: 1;
+
+        }
+    }
+}
