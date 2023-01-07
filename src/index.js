@@ -7,17 +7,25 @@ import { BrowserRouter } from "react-router-dom";
 import ProductProvider from "./hoc/ProductProvider";
 import TranslateProvider from "./hoc/TranslateProvider";
 
+import { Provider } from "react-redux";
+import { store, persistor } from "./Redux/store";
+import { PersistGate } from "redux-persist/integration/react";
+
 ReactDOM.render(
-  <React.StrictMode>
-    <BrowserRouter>
-    <TranslateProvider>
-      <ProductProvider>
-        <App />
-      </ProductProvider>
-    </TranslateProvider>
-    </BrowserRouter>
-  </React.StrictMode>,
-  document.getElementById("root")
+    <React.StrictMode>
+        <BrowserRouter>
+            <Provider store={store}>
+                <PersistGate loading={null} persistor={persistor}>
+                    <TranslateProvider>
+                        <ProductProvider>
+                            <App />
+                        </ProductProvider>
+                    </TranslateProvider>
+                </PersistGate>
+            </Provider>
+        </BrowserRouter>
+    </React.StrictMode>,
+    document.getElementById("root")
 );
 
 // If you want to start measuring performance in your app, pass a function
