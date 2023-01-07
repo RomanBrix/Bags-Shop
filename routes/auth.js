@@ -5,24 +5,24 @@ const jwt = require("jsonwebtoken");
 const { verifyTokenAndAdmin } = require("./verifyToken");
 
 //REGISTER
-router.post("/register", async (req, res) => {
-    const newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        // isAdmin: req.body.isAdmin || false,
-        password: CryptoJS.AES.encrypt(
-            req.body.password,
-            process.env.PASS_SEC
-        ).toString(),
-    });
+// router.post("/init", async (req, res) => {
+//     const newUser = new User({
+//         username: req.body.username,
+//         email: req.body.email,
+//         isAdmin: req.body.isAdmin || true,
+//         password: CryptoJS.AES.encrypt(
+//             req.body.password,
+//             process.env.PASS_SEC
+//         ).toString(),
+//     });
 
-    try {
-        const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+//     try {
+//         const savedUser = await newUser.save();
+//         res.status(201).json(savedUser);
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// });
 
 //admin add
 router.post("/add", verifyTokenAndAdmin, async (req, res) => {
@@ -45,7 +45,6 @@ router.post("/add", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //LOGIN
-
 router.post("/login", async (req, res) => {
     // console.log('object');
     try {
@@ -89,7 +88,7 @@ router.post("/login", async (req, res) => {
 router.post("/admin", async (req, res) => {
     // console.log('object');
     try {
-        // console.log(req.body)
+        // console.log(req.body);
         const user = await User.findOne({
             username: req.body.login || req.body.username,
         });
@@ -113,6 +112,7 @@ router.post("/admin", async (req, res) => {
         if (!user.isAdmin) {
             return res.status(401).json("You are not an admin");
         }
+        // console.log("first");
         const token = jwt.sign(
             {
                 id: user._id,
@@ -123,6 +123,7 @@ router.post("/admin", async (req, res) => {
         );
 
         const { password, ...others } = user._doc;
+        // console.log(token);
         res.status(200).json({ ...others, token });
     } catch (err) {
         res.status(500).json(err);

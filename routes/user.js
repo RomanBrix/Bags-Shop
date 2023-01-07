@@ -2,7 +2,6 @@ const User = require("../models/User");
 const CryptoJS = require("crypto-js");
 
 const {
-    verifyToken,
     verifyTokenAndAuthorization,
     verifyTokenAndAdmin,
 } = require("./verifyToken");
@@ -96,31 +95,7 @@ router.get("/", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET USER STATS
-
-router.get("/stats", verifyTokenAndAdmin, async (req, res) => {
-    const date = new Date();
-    const lastYear = new Date(date.setFullYear(date.getFullYear() - 1));
-
-    try {
-        const data = await User.aggregate([
-            { $match: { createdAt: { $gte: lastYear } } },
-            {
-                $project: {
-                    month: { $month: "$createdAt" },
-                },
-            },
-            {
-                $group: {
-                    _id: "$month",
-                    total: { $sum: 1 },
-                },
-            },
-        ]);
-        res.status(200).json(data);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+//User.aggregate
 
 //get username
 router.get("/usernames", verifyTokenAndAdmin, async (req, res) => {
@@ -132,12 +107,6 @@ router.get("/usernames", verifyTokenAndAdmin, async (req, res) => {
     } catch (err) {
         res.status(500).json(err);
     }
-    // try {
-    //   const user = await User.findOne({ _id: id }, 'username');
-    //   res.status(200).json({username: user.username});
-    // } catch (err) {
-    //   res.status(200).json({ message: "User not found" });
-    // }
 });
 
 module.exports = router;
