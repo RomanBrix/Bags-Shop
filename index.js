@@ -7,6 +7,7 @@ const http = require("http");
 
 const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
+const productsRoute = require("./routes/products");
 
 // const axios = require("axios");
 // const CryptoJS = require("crypto-js");
@@ -43,6 +44,7 @@ mongoose
 
 app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
+app.use("/api/products", productsRoute);
 
 // app.post("/", async (req, res) => {
 //     console.log("POOOOOOOST");
