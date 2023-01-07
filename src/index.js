@@ -6,6 +6,7 @@ import reportWebVitals from "./reportWebVitals";
 import { BrowserRouter } from "react-router-dom";
 import ProductProvider from "./hoc/ProductProvider";
 import TranslateProvider from "./hoc/TranslateProvider";
+import "react-toastify/dist/ReactToastify.css";
 
 import { Provider } from "react-redux";
 import { store, persistor } from "./Redux/store";

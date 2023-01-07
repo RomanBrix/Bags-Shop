@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 // import { useSelector } from "react-redux";
+import { ToastContainer } from "react-toastify";
 import { Routes, Route, useLocation } from "react-router-dom";
 import AdminContainer from "./components/admin";
 import CartContainer from "./components/cart";
@@ -38,6 +39,18 @@ function App() {
                 </Route>
                 <Route path="/admin/*" element={<AdminContainer />} />
             </Routes>
+            <ToastContainer
+                position="bottom-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
         </div>
     );
 }
