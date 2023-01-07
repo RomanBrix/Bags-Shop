@@ -2,6 +2,7 @@ import { useSelector } from "react-redux";
 import { Navigate, Route, Routes } from "react-router-dom";
 import AdminHeader from "./AdminHeader";
 import Enter from "./Enter";
+import Products from "./Products";
 import Settings from "./Settings";
 // import Cart from "./cart";
 
@@ -39,7 +40,7 @@ function AdminContainer(props) {
                     path="products"
                     element={
                         user && user.isAdmin ? (
-                            <h1>products</h1>
+                            <Products />
                         ) : (
                             <Navigate to="/admin" />
                         )
