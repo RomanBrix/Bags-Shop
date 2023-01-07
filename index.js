@@ -6,6 +6,8 @@ const cors = require("cors");
 const http = require("http");
 
 const authRoute = require("./routes/auth");
+const userRoute = require("./routes/user");
+
 // const axios = require("axios");
 // const CryptoJS = require("crypto-js");
 // const fs = require('fs')
@@ -40,6 +42,7 @@ mongoose
     });
 
 app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
 
 // app.post("/", async (req, res) => {
 //     console.log("POOOOOOOST");

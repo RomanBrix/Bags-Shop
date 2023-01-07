@@ -1,4 +1,4 @@
-const User = require("../models/User");
+const User = require("../models/Admin");
 const CryptoJS = require("crypto-js");
 
 const {
@@ -8,8 +8,25 @@ const {
 
 const router = require("express").Router();
 
+router.post("/add", verifyTokenAndAuthorization, async (req, res) => {
+    const newUser = new User({
+        username: req.body.username,
+        isAdmin: req.body.isAdmin || true,
+        password: CryptoJS.AES.encrypt(
+            req.body.password,
+            process.env.PASS_SEC
+        ).toString(),
+    });
+
+    try {
+        await newUser.save();
+        res.status(201).json({ status: true });
+    } catch (err) {
+        res.status(500).json({ status: false, err });
+    }
+});
 //UPDATE
-router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
+router.put("/change/:id", verifyTokenAndAuthorization, async (req, res) => {
     if (req.body.password) {
         req.body.password = CryptoJS.AES.encrypt(
             req.body.password,
@@ -25,14 +42,14 @@ router.put("/:id", verifyTokenAndAuthorization, async (req, res) => {
             },
             { new: true }
         );
-        res.status(200).json(updatedUser);
+        res.status(200).json({ status: true });
     } catch (err) {
         res.status(500).json(err);
     }
 });
 
 //ADMIN UPDATE
-router.put("/admin/:id", verifyTokenAndAdmin, async (req, res) => {
+router.put("/admin/:id", verifyTokenAndAuthorization, async (req, res) => {
     if (req.body.password) {
         req.body.password = CryptoJS.AES.encrypt(
             req.body.password,
@@ -59,9 +76,9 @@ router.put("/admin/:id", verifyTokenAndAdmin, async (req, res) => {
 router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
     try {
         await User.findByIdAndDelete(req.params.id);
-        res.status(200).json("User has been deleted...");
+        res.status(200).json({ status: true });
     } catch (err) {
-        res.status(500).json(err);
+        res.status(500).json({ status: false, err });
     }
 });
 
@@ -78,16 +95,15 @@ router.get("/find/:id", verifyTokenAndAdmin, async (req, res) => {
 });
 
 //GET ALL USER
-router.get("/", verifyTokenAndAdmin, async (req, res) => {
-    const query = req.query.new;
+router.get("/", verifyTokenAndAuthorization, async (req, res) => {
+    // const query = req.query.new;
     try {
-        const users = query
-            ? await User.find({}, "createdAt email isAdmin username")
-                  .sort({ _id: -1 })
-                  .limit(5)
-            : await User.find({}, "createdAt email isAdmin username").sort({
-                  createdAt: -1,
-              });
+        const users = await User.find({}, "createdAt email isAdmin username")
+            .sort({
+                createdAt: -1,
+            })
+            .lean();
+
         res.status(200).json(users);
     } catch (err) {
         res.status(500).json(err);

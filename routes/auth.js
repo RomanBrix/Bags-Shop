@@ -8,7 +8,6 @@ const { verifyTokenAndAdmin } = require("./verifyToken");
 // router.post("/init", async (req, res) => {
 //     const newUser = new User({
 //         username: req.body.username,
-//         email: req.body.email,
 //         isAdmin: req.body.isAdmin || true,
 //         password: CryptoJS.AES.encrypt(
 //             req.body.password,
@@ -25,24 +24,24 @@ const { verifyTokenAndAdmin } = require("./verifyToken");
 // });
 
 //admin add
-router.post("/add", verifyTokenAndAdmin, async (req, res) => {
-    const newUser = new User({
-        username: req.body.username,
-        email: req.body.email,
-        isAdmin: req.body.isAdmin || false,
-        password: CryptoJS.AES.encrypt(
-            req.body.password,
-            process.env.PASS_SEC
-        ).toString(),
-    });
+// router.post("/add", verifyTokenAndAdmin, async (req, res) => {
+//     const newUser = new User({
+//         username: req.body.username,
+//         email: req.body.email,
+//         isAdmin: req.body.isAdmin || false,
+//         password: CryptoJS.AES.encrypt(
+//             req.body.password,
+//             process.env.PASS_SEC
+//         ).toString(),
+//     });
 
-    try {
-        const savedUser = await newUser.save();
-        res.status(201).json(savedUser);
-    } catch (err) {
-        res.status(500).json(err);
-    }
-});
+//     try {
+//         const savedUser = await newUser.save();
+//         res.status(201).json(savedUser);
+//     } catch (err) {
+//         res.status(500).json(err);
+//     }
+// });
 
 //LOGIN
 router.post("/login", async (req, res) => {
