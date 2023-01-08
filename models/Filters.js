@@ -3,20 +3,19 @@ const Schema = mongoose.Schema;
 
 const FiltersBrandSchema = new Schema(
     {
-        brand: {
-            name: { type: String, required: true, unique: true },
-            products: { type: Schema.Types.ObjectId, ref: "Product" },
-        },
+        name: { type: String, required: true },
+        products: { type: Schema.Types.ObjectId, ref: "Product" },
     },
     { timestamps: true }
 );
 
 const FiltersTypeSchema = new Schema(
     {
-        type: {
-            name: { type: String, required: true, unique: true },
-            products: { type: Schema.Types.ObjectId, ref: "Product" },
+        name: {
+            ua: { type: String, required: true },
+            ru: { type: String, required: true },
         },
+        products: { type: Schema.Types.ObjectId, ref: "Product" },
     },
     { timestamps: true }
 );

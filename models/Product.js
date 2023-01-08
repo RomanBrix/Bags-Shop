@@ -5,7 +5,10 @@ const ProductSchema = new Schema(
     {
         title: { type: String, required: true, unique: true },
         brand: { type: String },
-        type: { type: String },
+        type: {
+            ua: { type: String },
+            ru: { type: String },
+        },
         about: {
             ua: { type: String },
             ru: { type: String },
