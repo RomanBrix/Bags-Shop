@@ -2,6 +2,7 @@ import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
+import { TwitterPicker } from "react-color";
 
 export default function SingleProduct({ allFilters }) {
     const { id } = useParams();
@@ -43,7 +44,7 @@ export default function SingleProduct({ allFilters }) {
         }
     }, []);
     // const
-    // console.log(product);
+    console.log(product);
     if (loading)
         return (
             <div className="admin">
@@ -147,18 +148,59 @@ export default function SingleProduct({ allFilters }) {
         </div>
     );
 
-    function renderVariants(list) {
-        // return
-    }
+    /*//////////////
+                                    VARIANTS LOGIC
+    //////////////*/
 
-    function addVariant() {
-        const newProd = product;
-        newProd.variants.push({
-            color: "#fefefe",
-            price: 1,
-            imgIndex: null,
+    function renderVariants(list) {
+        // return React Color
+        return list.map((item, index) => {
+            return (
+                <VariantsListItem
+                    item={item}
+                    index={index}
+                    key={index}
+                    changeVariant={changeVariant}
+                    deleteVariant={deleteVariant}
+                />
+            );
         });
     }
+
+    function deleteVariant(index) {
+        setProduct((prev) => {
+            let newProd = { ...prev };
+            newProd.variants = newProd.variants.filter(
+                (item, indx) => index != indx
+            );
+            return newProd;
+        });
+    }
+
+    function changeVariant(variant, index) {
+        setProduct((prev) => {
+            let newProd = { ...prev };
+            newProd.variants[index] = variant;
+            return newProd;
+        });
+    }
+    function addVariant() {
+        setProduct((prev) => ({
+            ...prev,
+            variants: [
+                ...prev.variants,
+                {
+                    color: "#fefefe",
+                    price: 1,
+                    imgIndex: null,
+                },
+            ],
+        }));
+    }
+
+    /*//////////////
+                                    MAIN INFO LOGIC 
+    //////////////*/
 
     function changeAboutVal({ target }) {
         const [about, key] = target.id.split("_");
@@ -196,4 +238,56 @@ export default function SingleProduct({ allFilters }) {
             );
         });
     }
+}
+
+/*//////////////
+                                    VARIANTS LIST ITEM COMPONENT
+    //////////////*/
+function VariantsListItem({ item, index, changeVariant, deleteVariant }) {
+    const [showPicker, setShowPicker] = useState(false);
+    // console.log(item);
+    return (
+        <div className="item" key={index}>
+            <div className="color">
+                <div
+                    className="color-name"
+                    onClick={() => {
+                        setShowPicker((prev) => !prev);
+                    }}
+                >
+                    {item.color}
+                </div>
+                {showPicker && (
+                    <TwitterPicker
+                        color={item.color}
+                        triangle={"hide"}
+                        onChangeComplete={(color) => {
+                            changeVariant({ ...item, color: color.hex }, index);
+                            setShowPicker(false);
+                        }}
+                    />
+                )}
+            </div>
+            <div className="price">
+                <label htmlFor={`price_${index}`}></label>
+                <input
+                    type="number"
+                    id={`price_${index}`}
+                    value={item.price}
+                    onChange={({ target }) => {
+                        changeVariant({ ...item, price: target.value }, index);
+                    }}
+                />
+            </div>
+            <div className="selectphoto">select photo</div>
+            <button
+                className="delete"
+                onClick={() => {
+                    deleteVariant(index);
+                }}
+            >
+                Удалить
+            </button>
+        </div>
+    );
 }
