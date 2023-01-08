@@ -30,7 +30,7 @@ export default function Products() {
                     <AllProducts allFilters={allFilters} events={events} />
                 }
             />
-            <Route path=":id" element={<SingleProduct />} />
+            <Route path=":id" element={<SingleProduct allFilters={allFilters}/>} />
         </Routes>
     );
 
