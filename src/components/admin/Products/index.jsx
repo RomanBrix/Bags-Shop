@@ -4,6 +4,7 @@ import { Navigate, Route, Routes } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createUserAxiosRequest } from "../../../requestMethods";
 import AllProducts from "./AllProducts";
+import SingleProduct from "./SingleProduct";
 
 export default function Products() {
     const [allFilters, setAllFilters] = useState({
@@ -29,7 +30,7 @@ export default function Products() {
                     <AllProducts allFilters={allFilters} events={events} />
                 }
             />
-            <Route path=":id" element={<h1>One Product Edit</h1>} />
+            <Route path=":id" element={<SingleProduct />} />
         </Routes>
     );
 

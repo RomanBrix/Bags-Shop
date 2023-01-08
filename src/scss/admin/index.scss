@@ -1,0 +1,43 @@
+.admin {
+    // background: red;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    .center {
+        box-sizing: border-box;
+
+        width: 1440px;
+        margin: 0 auto;
+        // background: #000;
+    }
+}
+
+@import "./products.scss";
+
+.admin-header {
+    box-shadow: 0 0px 12px 1px rgba($color: #000000, $alpha: 0.3);
+
+    .center {
+        box-sizing: border-box;
+
+        width: 1440px;
+        margin: 0 auto;
+        padding: 15px 0;
+        ul {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            align-items: center;
+            justify-content: flex-start;
+            li {
+                margin-right: 15px;
+                font-size: 18px;
+                cursor: pointer;
+                transition: 0.25s;
+                &:hover {
+                    opacity: 0.6;
+                }
+            }
+        }
+    }
+}

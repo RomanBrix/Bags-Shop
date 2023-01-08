@@ -8,44 +8,46 @@ export default function AdminHeader() {
     return (
         <>
             <div className="admin-header">
-                <ul>
-                    <li
-                        onClick={() => {
-                            changeLocation("orders");
-                        }}
-                    >
-                        Заказы
-                    </li>
-                    <li
-                        onClick={() => {
-                            changeLocation("products");
-                        }}
-                    >
-                        Продукты
-                    </li>
-                    <li
-                        onClick={() => {
-                            changeLocation("settings");
-                        }}
-                    >
-                        Настройки
-                    </li>
-                    <li
-                        onClick={() => {
-                            navigate("/");
-                        }}
-                    >
-                        Открыть сайт
-                    </li>
+                <div className="center">
+                    <ul>
+                        <li
+                            onClick={() => {
+                                changeLocation("orders");
+                            }}
+                        >
+                            Заказы
+                        </li>
+                        <li
+                            onClick={() => {
+                                changeLocation("products");
+                            }}
+                        >
+                            Продукты
+                        </li>
+                        <li
+                            onClick={() => {
+                                changeLocation("settings");
+                            }}
+                        >
+                            Настройки
+                        </li>
+                        <li
+                            onClick={() => {
+                                navigate("/");
+                            }}
+                        >
+                            Открыть сайт
+                        </li>
 
-                    <li
-                        onClick={async () => {
-                            await logoutUser(dispatch);
-                        }}
-                    >
-                        Выйти
-                    </li>
-                </ul>
+                        <li
+                            onClick={async () => {
+                                await logoutUser(dispatch);
+                            }}
+                        >
+                            Выйти
+                        </li>
+                    </ul>
+                </div>
             </div>
             <Outlet />
         </>

@@ -1,8 +1,10 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import FiltersLayout from "./FiltersLayout";
 
 export default function ProductsHead({ allFilters, events }) {
     const [showFiltersLayout, setShowFiltersLayout] = useState(false);
+    const navigate = useNavigate();
     // const [filterLayoutType, setFilterLayoutType]
     return (
         <div className="products-head">
@@ -16,7 +18,13 @@ export default function ProductsHead({ allFilters, events }) {
                     />
                 )}
                 <ul>
-                    <li>Добавить Товар</li>
+                    <li
+                        onClick={() => {
+                            navigate("./new");
+                        }}
+                    >
+                        Добавить Товар
+                    </li>
                     <li>Загрузить Товар</li>
                     <li>Загрузить Фотки</li>
                     <li
