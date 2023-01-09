@@ -3,6 +3,7 @@ import { useRef } from "react";
 import { useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { TwitterPicker } from "react-color";
+import { toast } from "react-toastify";
 
 export default function SingleProduct({ allFilters }) {
     const { id } = useParams();
@@ -22,6 +23,8 @@ export default function SingleProduct({ allFilters }) {
         variants: [],
         params: "Стандарт",
     });
+    const [filesToUpload, setFilesToUpload] = useState([]);
+
     const brandListRef = useRef(null);
     const typeListRef = useRef(null);
 
@@ -44,7 +47,7 @@ export default function SingleProduct({ allFilters }) {
         }
     }, []);
     // const
-    console.log(product);
+    // console.log(product);
     if (loading)
         return (
             <div className="admin">
@@ -62,6 +65,29 @@ export default function SingleProduct({ allFilters }) {
                 <div className="block">
                     <h2>1. Загрузите фотографии</h2>
                     грузи ебать
+                    <input
+                        accept="image/*"
+                        type="file"
+                        id="imgInp"
+                        onChange={({ target }) => {
+                            const [file] = target.files;
+                            if (!file) return;
+                            console.log(file);
+                            setFilesToUpload((prev) => [...prev, file]);
+                            //prev = URL.createObjectURL(file)
+                        }}
+                    />
+                    <div className="imgs-list">
+                        <ImagePrewiew
+                            imglist={filesToUpload}
+                            func={deleteProductImg}
+                            type="upload"
+                        />
+                        <ImagePrewiew
+                            imglist={product.imgs}
+                            func={deleteProductImg}
+                        />
+                    </div>
                 </div>
                 <div className="block">
                     <h2>2. Заполните основную информацию</h2>
@@ -144,9 +170,44 @@ export default function SingleProduct({ allFilters }) {
                         {renderVariants(product.variants)}
                     </div>
                 </div>
+
+                <button className="save" onClick={save}>
+                    Сохранить
+                </button>
             </div>
         </div>
     );
+
+    function save() {
+        if (product.imgs.length < 1 && filesToUpload.length < 1) {
+            toast.warning("Добавьте хотя бы одно фото");
+            return;
+        }
+
+        if (product.variants.length < 1) {
+            toast.warning("Добавьте хотя бы один вариант");
+            return;
+        }
+
+        //send data to server
+        console.log(product);
+        console.log(filesToUpload);
+    }
+
+    function deleteProductImg(index, type) {
+        if (type) {
+            setFilesToUpload((prev) => {
+                return prev.filter((item, indx) => indx !== index);
+            });
+        } else {
+            setProduct((prev) => {
+                return {
+                    ...prev,
+                    imgs: prev.filter((item, indx) => indx !== index),
+                };
+            });
+        }
+    }
 
     /*//////////////
                                     VARIANTS LOGIC
@@ -157,6 +218,9 @@ export default function SingleProduct({ allFilters }) {
         return list.map((item, index) => {
             return (
                 <VariantsListItem
+                    product={product}
+                    filesToUpload={filesToUpload}
+                    selectVariantImg={selectVariantImg}
                     item={item}
                     index={index}
                     key={index}
@@ -164,6 +228,21 @@ export default function SingleProduct({ allFilters }) {
                     deleteVariant={deleteVariant}
                 />
             );
+        });
+    }
+
+    function selectVariantImg(photoIndex, type = null, variantIndex) {
+        // console.log(type);
+        let selectedIndex = null;
+        if (type === "upload") {
+            selectedIndex = product.imgs.length + +photoIndex;
+        } else {
+            selectedIndex = photoIndex;
+        }
+        setProduct((prev) => {
+            const newVar = prev;
+            newVar.variants[variantIndex].imgIndex = selectedIndex;
+            return newVar;
         });
     }
 
@@ -242,9 +321,19 @@ export default function SingleProduct({ allFilters }) {
 
 /*//////////////
                                     VARIANTS LIST ITEM COMPONENT
-    //////////////*/
-function VariantsListItem({ item, index, changeVariant, deleteVariant }) {
+//////////////*/
+function VariantsListItem({
+    item,
+    index,
+    changeVariant,
+    deleteVariant,
+    filesToUpload,
+    selectVariantImg,
+    product,
+}) {
     const [showPicker, setShowPicker] = useState(false);
+    const [selectVatiantPhotoShow, setSelectVatiantPhotoShow] = useState(false);
+
     // console.log(item);
     return (
         <div className="item" key={index}>
@@ -279,7 +368,39 @@ function VariantsListItem({ item, index, changeVariant, deleteVariant }) {
                     }}
                 />
             </div>
-            <div className="selectphoto">select photo</div>
+            <div className="selectphoto">
+                <p>
+                    {item.imgIndex !== null
+                        ? item.imgIndex
+                        : "Выбрать фото для варианта из загруженных (если не выбирать будет заглавная)"}
+                </p>
+                <button
+                    onClick={() => {
+                        setSelectVatiantPhotoShow(true);
+                    }}
+                >
+                    Выбрать
+                </button>
+                {selectVatiantPhotoShow && (
+                    <div className="imgs-list">
+                        <ImagePrewiew
+                            imglist={filesToUpload}
+                            type="upload"
+                            func={(photo, type) => {
+                                selectVariantImg(photo, type, index);
+                                setSelectVatiantPhotoShow(false);
+                            }}
+                        />
+                        <ImagePrewiew
+                            imglist={product.imgs}
+                            func={(photo, type) => {
+                                selectVariantImg(photo, type, index);
+                                setSelectVatiantPhotoShow(false);
+                            }}
+                        />
+                    </div>
+                )}
+            </div>
             <button
                 className="delete"
                 onClick={() => {
@@ -290,4 +411,19 @@ function VariantsListItem({ item, index, changeVariant, deleteVariant }) {
             </button>
         </div>
     );
+}
+
+function ImagePrewiew({ imglist, func, type = null }) {
+    if (imglist.length === 0) return "";
+    return imglist.map((item, index) => {
+        return (
+            <img
+                src={type === "upload" ? URL.createObjectURL(item) : item}
+                key={index}
+                onClick={() => {
+                    func(index, type);
+                }}
+            />
+        );
+    });
 }
