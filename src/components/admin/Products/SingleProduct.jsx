@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { useRef } from "react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { TwitterPicker } from "react-color";
 import { toast } from "react-toastify";
+import { createUserAxiosRequest } from "../../../requestMethods";
 
 export default function SingleProduct({ allFilters }) {
     const { id } = useParams();
@@ -25,9 +26,12 @@ export default function SingleProduct({ allFilters }) {
     });
     const [filesToUpload, setFilesToUpload] = useState([]);
 
+    const protectedRequest = createUserAxiosRequest();
+
     const brandListRef = useRef(null);
     const typeListRef = useRef(null);
 
+    const navigate = useNavigate("");
     /*
         {
             color: '#fff',
@@ -40,6 +44,21 @@ export default function SingleProduct({ allFilters }) {
         if (id && id !== "new") {
             //load product
             //set load to false
+            protectedRequest
+                .get("/products/one/" + id)
+                .then(({ data }) => {
+                    // console.log(res);
+                    if (data.status) {
+                        setProduct(data.product);
+                        setLoading(false);
+                    } else {
+                        navigate("../");
+                    }
+                })
+                .catch((err) => {
+                    // console.log(err);
+                    navigate("../");
+                });
         }
 
         if (id === "new") {
@@ -174,11 +193,34 @@ export default function SingleProduct({ allFilters }) {
                 <button className="save" onClick={save}>
                     Сохранить
                 </button>
+                {id !== "new" && (
+                    <button className="delete" onClick={deleteProduct}>
+                        Удалить
+                    </button>
+                )}
             </div>
         </div>
     );
 
-    function save() {
+    function deleteProduct() {
+        if (!window.confirm("Удалить?")) return;
+        // console.log();
+        protectedRequest
+            .delete("/products/" + id)
+            .then(({ data }) => {
+                // console.log(first)
+                if (data.status) {
+                    toast.success("Продукт удален");
+                    navigate("../");
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error("Ошибка! Обновите страницу или попробуйте позже");
+            });
+    }
+
+    function save(e) {
         if (product.imgs.length < 1 && filesToUpload.length < 1) {
             toast.warning("Добавьте хотя бы одно фото");
             return;
@@ -190,8 +232,34 @@ export default function SingleProduct({ allFilters }) {
         }
 
         //send data to server
-        console.log(product);
-        console.log(filesToUpload);
+        // console.log(e.preventDefault);
+        // console.log(filesToUpload);
+        let bodyFormData = new FormData();
+        if (filesToUpload.length > 0) {
+            filesToUpload.forEach((file) => {
+                bodyFormData.append(file.name, file);
+            });
+        }
+
+        bodyFormData.append("product", JSON.stringify(product));
+        e.preventDefault();
+        protectedRequest
+            .post("/products/", bodyFormData)
+            .then((res) => {
+                // e.preventDefault();
+                console.log(res);
+                if (res.data.status) {
+                    toast.success("Изминения сохранены!");
+                    if (res.data?.id) {
+                        // navigate("../" + res.data.id);
+                    }
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+                toast.error("Произошла ошибка, обновите страницу и повторите");
+            });
+        // products
     }
 
     function deleteProductImg(index, type) {
@@ -203,7 +271,7 @@ export default function SingleProduct({ allFilters }) {
             setProduct((prev) => {
                 return {
                     ...prev,
-                    imgs: prev.filter((item, indx) => indx !== index),
+                    imgs: prev.imgs.filter((item, indx) => indx !== index),
                 };
             });
         }
