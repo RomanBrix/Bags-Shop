@@ -5,6 +5,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { TwitterPicker } from "react-color";
 import { toast } from "react-toastify";
 import { createUserAxiosRequest } from "../../../requestMethods";
+import { ReactComponent as UploadImgSvg } from "./svg/uploadImg.svg";
 
 export default function SingleProduct({ allFilters }) {
     const { id } = useParams();
@@ -69,7 +70,7 @@ export default function SingleProduct({ allFilters }) {
     // console.log(product);
     if (loading)
         return (
-            <div className="admin">
+            <div className="admin loading-page">
                 <div className="center">
                     <h1>Загружаем...</h1>
                 </div>
@@ -81,9 +82,16 @@ export default function SingleProduct({ allFilters }) {
                 <h1>
                     {id === "new" ? "Создаем новый товар" : "Редактируем товар"}
                 </h1>
-                <div className="block">
+                <div className="block ">
                     <h2>1. Загрузите фотографии</h2>
-                    грузи ебать
+                    <div
+                        className="hide-input"
+                        onClick={() => {
+                            document.getElementById("imgInp").click();
+                        }}
+                    >
+                        <UploadImgSvg />
+                    </div>
                     <input
                         accept="image/*"
                         type="file"
@@ -92,11 +100,24 @@ export default function SingleProduct({ allFilters }) {
                             const [file] = target.files;
                             if (!file) return;
                             console.log(file);
+                            // if (filesToUpload.includes(file)) console.log("DA");
+
+                            let double = false;
+                            filesToUpload.forEach((item) => {
+                                if (item.name === file.name) {
+                                    double = true;
+                                }
+                            });
+
+                            if (double) {
+                                toast.warning("Файл с таким именем уже есть");
+                                return;
+                            }
                             setFilesToUpload((prev) => [...prev, file]);
                             //prev = URL.createObjectURL(file)
                         }}
                     />
-                    <div className="imgs-list">
+                    <div className="imgs-list inline-content">
                         <ImagePrewiew
                             imglist={filesToUpload}
                             func={deleteProductImg}
@@ -111,47 +132,58 @@ export default function SingleProduct({ allFilters }) {
                 <div className="block">
                     <h2>2. Заполните основную информацию</h2>
                     <div className="inputs">
-                        <label htmlFor="title">Название</label>
                         <input
                             type="text"
                             id="title"
                             value={product.title}
                             onChange={changeVal}
+                            placeholder={" "}
                         />
+                        <label htmlFor="title">Название</label>
                     </div>
                     <div className="inputs">
-                        <label htmlFor="about_ua">Описание (UA)</label>
                         <input
                             type="text"
                             id="about_ua"
                             value={product.about.ua}
                             onChange={changeAboutVal}
+                            placeholder={" "}
                         />
+                        <label htmlFor="about_ua">Описание (UA)</label>
                     </div>
                     <div className="inputs">
-                        <label htmlFor="about_ru">Описание (ru)</label>
                         <input
                             type="text"
                             id="about_ru"
                             value={product.about.ru}
                             onChange={changeAboutVal}
+                            placeholder={" "}
                         />
+                        <label htmlFor="about_ru">Описание (ru)</label>
                     </div>
 
                     <div className="inputs">
-                        <label htmlFor="params">Размер</label>
                         <input
                             type="text"
                             id="params"
                             value={product.params}
                             onChange={changeVal}
+                            placeholder={" "}
                         />
+                        <label htmlFor="params">Размер</label>
                     </div>
 
                     <div className="inputs-select">
                         <div className="label">Бренд:</div>
                         <div className="select close" ref={brandListRef}>
-                            <div className="head">
+                            <div
+                                className="head"
+                                onClick={() => {
+                                    brandListRef.current.classList.toggle(
+                                        "close"
+                                    );
+                                }}
+                            >
                                 {product.brand || "Выбрать бренд"}
                             </div>
                             <div className="select-list">
@@ -166,7 +198,14 @@ export default function SingleProduct({ allFilters }) {
                     <div className="inputs-select">
                         <div className="label">Тип:</div>
                         <div className="select close" ref={typeListRef}>
-                            <div className="head">
+                            <div
+                                className="head"
+                                onClick={() => {
+                                    typeListRef.current.classList.toggle(
+                                        "close"
+                                    );
+                                }}
+                            >
                                 {product.type.ru || "Выбрать Тип"}
                             </div>
                             <div className="select-list">
@@ -190,14 +229,16 @@ export default function SingleProduct({ allFilters }) {
                     </div>
                 </div>
 
-                <button className="save" onClick={save}>
-                    Сохранить
-                </button>
-                {id !== "new" && (
-                    <button className="delete" onClick={deleteProduct}>
-                        Удалить
+                <div className="btns">
+                    <button className="save" onClick={save}>
+                        Сохранить
                     </button>
-                )}
+                    {id !== "new" && (
+                        <button className="delete" onClick={deleteProduct}>
+                            Удалить
+                        </button>
+                    )}
+                </div>
             </div>
         </div>
     );
@@ -250,6 +291,7 @@ export default function SingleProduct({ allFilters }) {
                 console.log(res);
                 if (res.data.status) {
                     toast.success("Изминения сохранены!");
+                    setFilesToUpload([]);
                     if (res.data?.id) {
                         // navigate("../" + res.data.id);
                     }
@@ -362,7 +404,8 @@ export default function SingleProduct({ allFilters }) {
 
     function selectFilter(type, value, ref) {
         //change class of ref
-        console.log(ref);
+        // console.log(ref);
+        ref.current.classList.add("close");
         setProduct((prev) => ({ ...prev, [type]: value }));
     }
 
@@ -485,13 +528,17 @@ function ImagePrewiew({ imglist, func, type = null }) {
     if (imglist.length === 0) return "";
     return imglist.map((item, index) => {
         return (
-            <img
-                src={type === "upload" ? URL.createObjectURL(item) : item}
-                key={index}
+            <div
+                className="placehold"
                 onClick={() => {
                     func(index, type);
                 }}
-            />
+                key={index}
+            >
+                <img
+                    src={type === "upload" ? URL.createObjectURL(item) : item}
+                />
+            </div>
         );
     });
 }
