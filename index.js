@@ -48,6 +48,32 @@ app.use("/api/user", userRoute);
 app.use("/api/products", productsRoute);
 app.use("/api/filters", filtersRoute);
 
+/*
+file upload 
+app.use(express.json({limit: '90mb'}));
+app.use(fileUpload());  = npm
+
+
+router.post("/new", verifyAdmin, async (req, res) => {
+   
+    const  { image } = req.files;
+    let  { product }  = req.body;
+    console.log()
+    if(image){
+        product = JSON.parse(product);
+    if (!(/^image/.test(image.mimetype))) return res.sendStatus(400);
+        image.mv(pathToPublicProducts + image.name);
+        product.image = image.name;
+    }
+
+    console.log(product)
+    const prod = await addProduct(product)
+    
+    
+    res.status(200).json(prod);
+});
+*/
+
 // app.post("/", async (req, res) => {
 //     console.log("POOOOOOOST");
 //     console.log("req.params");

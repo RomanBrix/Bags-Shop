@@ -14,3 +14,7 @@ JWT_SEC = "helloMyBabyHelloMyHoney"; //string
 ### Databese
 
 Project use mongodb.
+
+##### \*\*\*\*P.S.:
+
+**change 'pathToFile' in "routes/product" to your production folder**
