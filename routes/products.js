@@ -27,6 +27,8 @@ router.post(
         // console.log(req.files);
         if (req.files) {
             for (const image in req.files) {
+                if (!/^image/.test(req.files[image].mimetype))
+                    return res.sendStatus(503);
                 const pathForName = "/src/productImg/";
                 req.files[image].mv(
                     pathToFile + pathForName + req.files[image].name
