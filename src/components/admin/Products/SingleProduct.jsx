@@ -6,6 +6,7 @@ import { TwitterPicker } from "react-color";
 import { toast } from "react-toastify";
 import { createUserAxiosRequest } from "../../../requestMethods";
 import { ReactComponent as UploadImgSvg } from "./svg/uploadImg.svg";
+import { ReactComponent as PlusSvg } from "./svg/plus.svg";
 
 export default function SingleProduct({ allFilters }) {
     const { id } = useParams();
@@ -222,9 +223,9 @@ export default function SingleProduct({ allFilters }) {
                     <h2>3. Добавьте варианты товара</h2>
 
                     <button className="add" onClick={addVariant}>
-                        Добавить вариант
+                        <PlusSvg />
                     </button>
-                    <div className="variant-list">
+                    <div className="variant-list inline-content">
                         {renderVariants(product.variants)}
                     </div>
                 </div>
@@ -379,7 +380,7 @@ export default function SingleProduct({ allFilters }) {
             variants: [
                 ...prev.variants,
                 {
-                    color: "#fefefe",
+                    color: "#00D084",
                     price: 1,
                     imgIndex: null,
                 },
@@ -449,14 +450,14 @@ function VariantsListItem({
     return (
         <div className="item" key={index}>
             <div className="color">
+                <div className="head">Цвет варианта:</div>
                 <div
                     className="color-name"
                     onClick={() => {
                         setShowPicker((prev) => !prev);
                     }}
-                >
-                    {item.color}
-                </div>
+                    style={{ backgroundColor: item.color }}
+                />
                 {showPicker && (
                     <TwitterPicker
                         color={item.color}
@@ -468,8 +469,7 @@ function VariantsListItem({
                     />
                 )}
             </div>
-            <div className="price">
-                <label htmlFor={`price_${index}`}></label>
+            <div className="price inputs">
                 <input
                     type="number"
                     id={`price_${index}`}
@@ -478,19 +478,32 @@ function VariantsListItem({
                         changeVariant({ ...item, price: target.value }, index);
                     }}
                 />
+                <label htmlFor={`price_${index}`}>Цена</label>
             </div>
             <div className="selectphoto">
                 <p>
-                    {item.imgIndex !== null
-                        ? item.imgIndex
-                        : "Выбрать фото для варианта из загруженных (если не выбирать будет заглавная)"}
+                    {item.imgIndex !== null ? (
+                        <img
+                            src={
+                                item.imgIndex >= product.imgs.length
+                                    ? URL.createObjectURL(
+                                          filesToUpload[item.imgIndex]
+                                      )
+                                    : product.imgs[item.imgIndex]
+                            }
+                            className="preview"
+                        />
+                    ) : (
+                        "Выбрать фото для варианта из загруженных (если не выбирать будет заглавная)"
+                    )}
                 </p>
                 <button
                     onClick={() => {
                         setSelectVatiantPhotoShow(true);
                     }}
+                    className="select-btn"
                 >
-                    Выбрать
+                    Выбрать Фото
                 </button>
                 {selectVatiantPhotoShow && (
                     <div className="imgs-list">
@@ -518,7 +531,7 @@ function VariantsListItem({
                     deleteVariant(index);
                 }}
             >
-                Удалить
+                Удалить Вариант
             </button>
         </div>
     );
