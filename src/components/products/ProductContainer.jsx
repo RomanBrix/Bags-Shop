@@ -7,7 +7,7 @@ import LazyBlock from "./LazyBlock";
 function ProductContainer(props) {
     const { currentItems, getPagination } = useProduct();
 
-    const urlType = useParams()["*"] || "all";
+    const urlType = useParams()["type"];
     // console.log(urlType);
     const [search] = useSearchParams();
     const searchPage = +search.get("page") || 1;

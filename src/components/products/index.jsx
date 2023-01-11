@@ -18,9 +18,11 @@ function Product(props) {
                 </div>
                 <Routes>
                     <Route index element={<ProductContainer />} />
-                    <Route path="bags" element={<ProductContainer />} />
+
+                    <Route path=":type" element={<ProductContainer />} />
+                    {/* <Route path="bags" element={<ProductContainer />} />
                     <Route path="backpacks" element={<ProductContainer />} />
-                    <Route path="wallets" element={<ProductContainer />} />
+                    <Route path="wallets" element={<ProductContainer />} /> */}
                 </Routes>
             </div>
         </div>

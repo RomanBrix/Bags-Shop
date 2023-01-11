@@ -23,20 +23,27 @@ export default function Settings({ user }) {
             <div className="center">
                 <h1>Settings</h1>
                 <div className="block">
-                    <h2>Change Username Password</h2>
+                    <h2>Изменить логин и пароль</h2>
                     <div className="form">
-                        <input
-                            type="text"
-                            id="username"
-                            value={inputs.username}
-                            onChange={changeInputs}
-                        />
-                        <input
-                            type="text"
-                            id="password"
-                            value={inputs.password}
-                            onChange={changeInputs}
-                        />
+                        <div className="inputs">
+                            <input
+                                type="text"
+                                id="username"
+                                value={inputs.username}
+                                onChange={changeInputs}
+                            />
+                            <label htmlFor="username">Username</label>
+                        </div>
+                        <div className="inputs">
+                            <input
+                                type="text"
+                                id="password"
+                                value={inputs.password}
+                                onChange={changeInputs}
+                            />
+                            <label htmlFor="password">Password</label>
+                        </div>
+
                         <button
                             className={`btn ${
                                 inputs.username !== user.username ||
@@ -52,7 +59,7 @@ export default function Settings({ user }) {
                 </div>
 
                 <div className="block">
-                    <h2>All users</h2>
+                    <h2>Все пользователи</h2>
                     <button className="btn" onClick={addNewUser}>
                         Добавить пользователя
                     </button>

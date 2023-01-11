@@ -439,7 +439,9 @@
                 margin-bottom: 20px;
             }
             .delete {
+                margin-right: 25px;
                 cursor: pointer;
+                width: 140px !important ;
 
                 margin-top: auto;
                 background: rgba($color: #f78da7, $alpha: 0.3);

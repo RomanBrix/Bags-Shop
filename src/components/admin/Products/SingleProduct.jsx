@@ -231,14 +231,14 @@ export default function SingleProduct({ allFilters }) {
                 </div>
 
                 <div className="btns">
-                    <button className="save" onClick={save}>
-                        Сохранить
-                    </button>
                     {id !== "new" && (
                         <button className="delete" onClick={deleteProduct}>
                             Удалить
                         </button>
                     )}
+                    <button className="save" onClick={save}>
+                        Сохранить
+                    </button>
                 </div>
             </div>
         </div>
@@ -326,20 +326,22 @@ export default function SingleProduct({ allFilters }) {
 
     function renderVariants(list) {
         // return React Color
-        return list.map((item, index) => {
-            return (
-                <VariantsListItem
-                    product={product}
-                    filesToUpload={filesToUpload}
-                    selectVariantImg={selectVariantImg}
-                    item={item}
-                    index={index}
-                    key={index}
-                    changeVariant={changeVariant}
-                    deleteVariant={deleteVariant}
-                />
-            );
-        });
+        return list
+            .map((item, index) => {
+                return (
+                    <VariantsListItem
+                        product={product}
+                        filesToUpload={filesToUpload}
+                        selectVariantImg={selectVariantImg}
+                        item={item}
+                        index={index}
+                        key={index}
+                        changeVariant={changeVariant}
+                        deleteVariant={deleteVariant}
+                    />
+                );
+            })
+            .reverse();
     }
 
     function selectVariantImg(photoIndex, type = null, variantIndex) {
