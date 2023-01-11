@@ -15,13 +15,6 @@ router.post(
     verifyTokenAndAuthorization,
     fileUpload(),
     async (req, res) => {
-        // console.log("req.body");
-        // console.log(req.body);
-        // console.log("req.query");
-        // console.log(req.query);
-        // console.log("req.files");
-        // console.log(req.files);
-
         const product = JSON.parse(req.body.product);
 
         // console.log(req.files);
@@ -96,6 +89,20 @@ router.get("/one/:id", async (req, res) => {
         }
     }
     // const
+});
+
+router.get("/all", async (req, res) => {
+    try {
+        const products = await Product.find({}).sort({ createdAt: -1 }).lean();
+
+        if (products) {
+            res.status(200).json({ status: true, products });
+        } else {
+            res.status(200).json({ status: false });
+        }
+    } catch (err) {
+        res.status(500).json(err);
+    }
 });
 
 module.exports = router;
