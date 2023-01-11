@@ -9,6 +9,7 @@ const authRoute = require("./routes/auth");
 const userRoute = require("./routes/user");
 const productsRoute = require("./routes/products");
 const filtersRoute = require("./routes/filters");
+const checkRoute = require("./routes/check");
 
 // const axios = require("axios");
 // const CryptoJS = require("crypto-js");
@@ -47,6 +48,7 @@ app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 app.use("/api/products", productsRoute);
 app.use("/api/filters", filtersRoute);
+app.use("/api/check", checkRoute);
 
 /*
 file upload 
