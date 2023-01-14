@@ -12,7 +12,7 @@ import SingleProduct from "./components/products/SingleProduct";
 
 function App() {
     const location = useLocation();
-    console.log(location);
+    // console.log(location);
     useEffect(() => {
         window.scrollTo(0, 0);
     }, [location.pathname]);
@@ -24,10 +24,7 @@ function App() {
                 <Route path="/" element={<Layout />}>
                     <Route index element={<MainPage />} />
                     <Route path="/shop/*" element={<Product />} />
-                    <Route
-                        path="/product/:id&:type"
-                        element={<SingleProduct />}
-                    />
+                    <Route path="/product/:id" element={<SingleProduct />} />
                     <Route path="/cart/*" element={<CartContainer />} />
                     <Route path="/contacts" element={<Contacts />} />
 

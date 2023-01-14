@@ -21,39 +21,30 @@ function FilterContainer(props) {
         filters,
         priceValue,
         setPriceValue,
+
+        products,
+        typeList,
+        priceForFilter,
     } = useProduct();
 
     const handleChange = (event, newValue) => {
         setPriceValue(newValue);
     };
-    // const handleChangeInput = (target, pos) => {
-    //     setPriceValue((prevv)=>{
-    //         const val = +target.value;
-    //         const newArr = prevv;
-    //         if(pos == 0){
-    //             if(val > 1000 && val < prevv[1]){
-    //                 newArr[pos] = val;
-    //             }
-    //         }else{
-    //             if(val < 99999 && val > prevv[0]){
-    //                 newArr[pos] = val;
-    //             }
-    //         }
-    //         console.log(newArr)
-
-    //         return newArr;
-    //     });
-    //   };
+    useEffect(() => {
+        setPriceValue(null);
+    }, [priceForFilter]);
 
     useEffect(() => {
-        getFilter("brand", urlType);
+        if (typeList) {
+            getFilter();
+        }
         removeAllFilters();
         // eslint-disable-next-line
-    }, [urlType]);
+    }, [urlType, typeList, products]);
 
     const { getTranslateBlock } = useTranslate();
     const translate = getTranslateBlock("products");
-
+    // console.log(priceForFilter);
     return (
         <div className="filter-container">
             <Cancel
@@ -68,18 +59,24 @@ function FilterContainer(props) {
                 <h2>{translate.filters.price} </h2>
                 <p>
                     {translate.filters.from}
-                    <span>{priceValue[0]}</span>- {translate.filters.to}
-                    <span>{priceValue[1]}</span>
+                    <span>
+                        {priceValue ? priceValue[0] : priceForFilter[0]}
+                    </span>
+                    - {translate.filters.to}
+                    <span>
+                        {priceValue ? priceValue[1] : priceForFilter[1]}
+                    </span>
                 </p>
                 <Slider
                     getAriaLabel={() => "Цена"}
-                    value={priceValue}
+                    value={priceValue || priceForFilter}
                     onChange={handleChange}
                     valueLabelDisplay="auto"
                     getAriaValueText={valuetext}
-                    min={1000}
-                    max={69999}
-                    step={500}
+                    min={priceForFilter[0]}
+                    max={priceForFilter[1]}
+                    sx={{ color: "#d0593b" }}
+                    step={25}
                 />
             </div>
             <h2>{translate.filters.brand}</h2>

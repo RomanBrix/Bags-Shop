@@ -5,29 +5,15 @@ import { ReactComponent as Arrow } from "../svg/arrow.svg";
 import useTranslate from "../../hook/useTranslate";
 import ContactsInfo from "../../helpers/ContactInfo";
 import { ReactComponent as Cancel } from "../svg/cancel.svg";
-import { useEffect, useState } from "react";
-import { publicRequest } from "../../requestMethods";
+import useProduct from "../../hook/useProduct";
 
-function Header(props) {
+function Header() {
     const navigate = useNavigate();
     const { language, changeLanguage, getTranslateBlock } = useTranslate();
-    const [shopSubMenu, setShopSubMenu] = useState([]);
+    const { typeList } = useProduct();
 
     const translate = getTranslateBlock("header");
-    // console.log(language);
-    // const { publicRequest }
-    // publicRequest
 
-    useEffect(() => {
-        publicRequest
-            .get("/filters/?type=type")
-            .then(({ data }) => {
-                setShopSubMenu(data.type);
-            })
-            .catch((err) => {
-                console.log(err);
-            });
-    }, []);
     return (
         <div className="header forContainer">
             <div className="container big-container">
@@ -78,7 +64,7 @@ function Header(props) {
                             }}
                         >
                             <span>
-                                {translate.menu.shop}{" "}
+                                {translate.menu.shop}
                                 <Arrow className="arrow-down" />
                             </span>
                             <ul
@@ -90,7 +76,7 @@ function Header(props) {
                                 {/* <li onClick={()=>{navigate('/shop/bags')}}>{translate.menu.bag}</li>
                                 <li onClick={()=>{navigate('/shop/backpacks')}}>{translate.menu.backpack}</li>
                                 <li onClick={()=>{navigate('/shop/wallets')}}>{translate.menu.wallets}</li> */}
-                                {renderSubMenu(shopSubMenu)}
+                                {renderSubMenu(typeList)}
                             </ul>
                         </li>
                         {/* <li onClick={()=>{navigate('/brands')}}>{translate.menu.brand}</li> */}
@@ -262,6 +248,7 @@ function Header(props) {
     );
 
     function renderSubMenu(menu) {
+        if (!menu) return "";
         return menu.map((item, index) => {
             // console.log(item);
             return (

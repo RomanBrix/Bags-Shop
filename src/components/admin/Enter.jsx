@@ -1,6 +1,6 @@
 import { useState } from "react";
-import axios from "axios";
-// import { publicRequest } from "../../requestMethods";
+// import axios from "axios";
+import { publicRequest } from "../../requestMethods";
 import { adminLogin } from "../../Redux/userControl";
 import { useDispatch } from "react-redux";
 
@@ -37,9 +37,9 @@ export default function Enter() {
                     <button className="btn" onClick={login}>
                         Ввойти
                     </button>
-                    {/* <button className="btn" onClick={initAdmin}>
+                    <button className="btn" onClick={initAdmin}>
                         Init
-                    </button> */}
+                    </button>
                 </div>
             </div>
         </div>
@@ -50,12 +50,12 @@ export default function Enter() {
         await adminLogin(dispatch, inputs.username, inputs.password);
     }
 
-    // function initAdmin() {
-    //     // axios
-    //     publicRequest.post("/auth/init", { ...inputs }).then((res) => {
-    //         console.log(res);
-    //     });
-    // }
+    function initAdmin() {
+        // axios
+        publicRequest.post("/auth/init", { ...inputs }).then((res) => {
+            console.log(res);
+        });
+    }
     function handleChange({ target }) {
         setInputs((prev) => ({
             ...prev,

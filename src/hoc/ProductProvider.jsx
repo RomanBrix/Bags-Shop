@@ -6,25 +6,80 @@ import productsJSON from "./product.json";
 export const ProductContext = React.createContext(null);
 
 function ProductProvider({ children }) {
+    const [allProducts, setAllProducts] = useState(productsJSON);
     const [products, setProducts] = useState(productsJSON);
+
+    const [typeList, setTypeList] = useState(null);
+    const [brandList, setBrandList] = useState(null);
+    const [priceForFilter, setPriceForFilter] = useState([0, 100]);
+
     const [currentItems, setCurrentItems] = useState([]);
     const [itemsPerPage, setItemsPerPage] = useState(9);
+    const [activeType, setActiveType] = useState("");
 
     const [filters, setFilters] = useState([]);
     const [filtersTags, setFiltersTags] = useState([]);
 
-    const [priceValue, setPriceValue] = useState([1000, 69998]);
+    const [priceValue, setPriceValue] = useState(null);
 
     useEffect(() => {
         publicRequest.get("/products/all").then(({ data }) => {
             if (data.status) {
                 // console.log(data.products);
-                setProducts(data.products);
+                setAllProducts(data.products);
             } else {
-                setProducts([]);
+                setAllProducts([]);
             }
         });
+        publicRequest
+            .get("/filters/?type=type")
+            .then(({ data }) => {
+                setTypeList(data.type);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+        publicRequest
+            .get("/filters/?type=brand")
+            .then(({ data }) => {
+                setBrandList(data.brand);
+            })
+            .catch((err) => {
+                console.log(err);
+            });
     }, []);
+
+    useEffect(() => {
+        if (typeList) {
+            if (!activeType || activeType === "") {
+                // console.log("tyyt");
+                setProducts(allProducts);
+            } else {
+                const type = typeList.filter((item) => item._id === activeType);
+                const typedProducts = allProducts.filter(
+                    (item) => item.type.ua === type[0].name.ua
+                );
+                setProducts(typedProducts);
+            }
+        }
+    }, [activeType, typeList]);
+
+    useEffect(() => {
+        if (products.length > 1) {
+            let prices = [];
+            products.forEach((item) => {
+                item.variants.forEach((variant) => prices.push(variant.price));
+            });
+            prices.sort((a, b) => a - b);
+            if (prices.length > 1) {
+                setPriceForFilter([prices[0], prices[prices.length - 1]]);
+            } else {
+                setPriceForFilter([0, prices[0] || 10]);
+            }
+            // setPriceValue(null)
+        }
+        // setPriceForFilter
+    }, [products.length]);
 
     // let filteredProducts = products.map((item, index) => {
     //     return item.filter((obj) => {
@@ -32,20 +87,24 @@ function ProductProvider({ children }) {
     //     });
     // });
 
-    let filteredProducts = products.filter((obj) => {
+    let filteredProducts = products.filter((product) => {
         //ПОМЕНЯТЬ ФИЛЬР ПО ЦЕНЕ
+        // console.log(product);
+        const priceArr = product.variants
+            .map((item) => {
+                return item.price;
+            })
+            .sort((a, b) => a - b);
+        const minPrice = priceValue ? priceValue[0] : priceForFilter[0];
+        const maxPrice = priceValue ? priceValue[1] : priceForFilter[1];
         return (
-            obj.variants[0].price >= priceValue[0] && obj.price <= priceValue[1]
+            priceArr[0] >= minPrice && priceArr[priceArr.length - 1] <= maxPrice
         );
     });
 
     if (filters.length > 0) {
-        filteredProducts = filteredProducts.map((item) => {
-            //ПОСМОТРЕТЬ СОРТИРОВКУ ПО БРЕНДУ
-            const a = item.filter((obj) => {
-                return filters.includes(obj.brand);
-            });
-            return a;
+        filteredProducts = filteredProducts.filter((obj) => {
+            return filters.includes(obj.brand);
         });
     }
 
@@ -68,70 +127,23 @@ function ProductProvider({ children }) {
         setFilters([]);
     }
 
-    function getFilter(tag, type = "all") {
-        if (type === "all") {
-            const arr = [];
-            for (let i = 0; i < products.length; i++) {
-                for (let j = 0; j < products[i].length; j++) {
-                    arr.push(products[i][j][tag]);
-                }
-            }
-            setFiltersTags(arr);
-        } else {
-            const arr = [];
-            let number = 0;
-            switch (type) {
-                case "backpacks":
-                    number = 1;
-                    break;
-                case "wallets":
-                    number = 2;
-                    break;
+    function changeActiveType(type) {
+        setActiveType(type);
+    }
 
-                default:
-                    number = 0;
-                    break;
-            }
-
-            for (let i = 0; i < products[number].length; i++) {
-                arr.push(products[number][i][tag]);
-            }
-            setFiltersTags(arr);
-        }
+    function getFilter() {
+        const brands = products
+            .map((item) => item.brand)
+            .filter((item, index, self) => self.indexOf(item) === index);
+        // console.log(brands);
+        setFiltersTags(brands);
     }
 
     function getPagination(type, urlItemOffset = 0) {
-        console.log(type);
-        let items = filteredProducts.filter((item) => {
-            console.log("item");
-            console.log(item);
-        });
-        // switch (type) {
-        //     case "bugs":
-        //         items = filteredProducts[0];
-        //         break;
-
-        //     case "backpacks":
-        //         items = filteredProducts[1];
-        //         break;
-
-        //     case "wallets":
-        //         items = filteredProducts[2];
-        //         break;
-
-        //     default:
-        //         items = [
-        //             ...filteredProducts[0],
-        //             ...filteredProducts[1],
-        //             ...filteredProducts[2],
-        //         ];
-        //         break;
-        // }
-
         return (
             <Pagination
                 itemsPerPage={itemsPerPage}
-                items={items}
+                items={filteredProducts}
                 urlItemOffset={urlItemOffset}
                 setCurrentItems={setCurrentItems}
                 filters={filters}
@@ -139,9 +151,11 @@ function ProductProvider({ children }) {
         );
     }
 
-    function getSingleProduct(id, type) {
-        for (let i = 0; i < products[type].length; i++) {
-            if (+id === products[type][i].id) return products[type][i];
+    function getSingleProduct(id) {
+        const product = allProducts.filter((item) => item._id === id);
+
+        if (product.length === 1) {
+            return product[0];
         }
         return {
             error: "No Match",
@@ -160,8 +174,13 @@ function ProductProvider({ children }) {
         removeAllFilters,
         filters,
         getSingleProduct,
+
         priceValue,
         setPriceValue,
+        changeActiveType,
+        typeList,
+        priceForFilter,
+        setPriceForFilter,
     };
     return (
         <ProductContext.Provider value={val}>

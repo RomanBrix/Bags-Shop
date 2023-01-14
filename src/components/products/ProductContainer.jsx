@@ -1,11 +1,12 @@
 // import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useParams, useSearchParams } from "react-router-dom";
 import useProduct from "../../hook/useProduct";
 import useTranslate from "../../hook/useTranslate";
 import LazyBlock from "./LazyBlock";
 
 function ProductContainer(props) {
-    const { currentItems, getPagination } = useProduct();
+    const { currentItems, getPagination, changeActiveType } = useProduct();
 
     const urlType = useParams()["type"];
     // console.log(urlType);
@@ -13,6 +14,11 @@ function ProductContainer(props) {
     const searchPage = +search.get("page") || 1;
     const { getTranslateBlock } = useTranslate();
     const translate = getTranslateBlock("products");
+    useEffect(() => {
+        changeActiveType(urlType || "");
+    }, [urlType]);
+
+    // console.log(currentItems);
 
     return (
         <div className="products-container">
@@ -32,22 +38,30 @@ function ProductContainer(props) {
     );
 
     function renderProducts(items) {
-        console.log(items.length);
+        // console.log(items.length);
         if (items.length > 0) {
             return items.map((item, index) => {
+                const priceArr = item.variants
+                    .map((item) => {
+                        return item.price;
+                    })
+                    .sort((a, b) => a - b);
+                let price =
+                    priceArr.length > 1
+                        ? `${priceArr[0]} - ${priceArr[priceArr.length - 1]}`
+                        : priceArr[0];
                 return (
                     <LazyBlock
-                        type={item.type}
-                        id={item.id}
+                        id={item._id}
                         key={index}
-                        img={item.img}
+                        img={item.imgs[0]}
                         title={item.title}
-                        price={item.price}
+                        price={price}
                     />
                 );
             });
         } else {
-            return <h1>Sorry !</h1>;
+            return <h1>0 Products yet!</h1>;
         }
     }
 }

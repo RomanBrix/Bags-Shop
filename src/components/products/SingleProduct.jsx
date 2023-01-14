@@ -1,48 +1,45 @@
-import { lazy, Suspense, useState } from "react";
+import { lazy, Suspense, useEffect, useState } from "react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import useProduct from "../../hook/useProduct";
 import { ReactComponent as Loader } from "../svg/hearts.svg";
 import Cookies from "js-cookie";
 import useTranslate from "../../hook/useTranslate";
+import { publicRequest } from "../../requestMethods";
 
 function SingleProduct(props) {
     const id = useParams()["id"] || "all";
-    const type = useParams()["type"] || "all";
     const navigate = useNavigate();
     const { getSingleProduct } = useProduct();
 
-    const [product] = useState(getSingleProduct(id, type));
-    const [activeImg, setActiveImg] = useState(product.img);
+    const [product, setProduct] = useState(null);
+    const [activeImg, setActiveImg] = useState(null);
+
     const [varinatName, setVarinatName] = useState("");
+    console.log(product);
 
     const MainImg = getLazyImage({ src: activeImg, alt: "" });
-    const VariantImg = product.variantImg
-        ? product.variantImg.map((item, index) => {
-              return getLazyImage({
-                  src: item,
-                  alt: "",
-                  dataSrc: item,
-                  dataVariant: product.variantInfo[index],
-              });
-          })
-        : [];
+
+    useEffect(() => {
+        publicRequest
+            .get("/products/one/" + id)
+            .then(({ data }) => {
+                setProduct(data.product);
+                setActiveImg(data.product.imgs[0]);
+            })
+            .catch((err) => {
+                console.log(err);
+                navigate(-1);
+            });
+    }, []);
 
     const { language } = useTranslate();
-    // console.log(language)
-    if (product.error) {
+    console.log(product);
+    if (!product) {
         return (
             <div className="single-product forContainer">
                 <div className="container">
-                    <h1>No match, sorry</h1>
-                    <div
-                        className="btn"
-                        onClick={() => {
-                            navigate(-1);
-                        }}
-                    >
-                        Back
-                    </div>
+                    <h1>Loading...</h1>
                 </div>
             </div>
         );
@@ -70,7 +67,8 @@ function SingleProduct(props) {
                     </div>
                     {renderContent(product.additional_info)}
 
-                    {VariantImg.length > 1 ? (
+                    {/*
+                    VariantImg.length > 1 ? (
                         <>
                             <p className="var-head">
                                 {language === "ua" ? "Варіант" : "Вариант"}:
@@ -101,7 +99,8 @@ function SingleProduct(props) {
                         </>
                     ) : (
                         <></>
-                    )}
+                    )
+                */}
 
                     <div className="bottom">
                         <div className="price">{product.price} UAH.</div>
