@@ -67,4 +67,31 @@ router.post("/", verifyTokenAndAuthorization, async (req, res) => {
     }
 });
 
+router.delete("/:id", verifyTokenAndAuthorization, async (req, res) => {
+    // console.log(req.params);
+    const { id } = req.params;
+    if (!id) return res.status(500);
+    console.log(req.query);
+    const { type } = req.query;
+
+    try {
+        switch (type) {
+            case "type":
+                await FiltersType.findByIdAndDelete(id);
+                return res.status(200).json({ status: true });
+
+            case "brand":
+                await FiltersBrand.findByIdAndDelete(id);
+                return res.status(200).json({ status: true });
+
+            default:
+                return res
+                    .status(500)
+                    .json({ status: false, err: "type is not included" });
+        }
+    } catch (err) {
+        return res.status(500).json({ status: false, err });
+    }
+});
+
 module.exports = router;

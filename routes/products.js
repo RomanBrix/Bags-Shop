@@ -1,5 +1,10 @@
 const Product = require("../models/Product");
 const fileUpload = require("express-fileupload");
+const extract = require("extract-zip");
+var path = require("path");
+// const { parse } = require("csv-parse");
+const { parse } = require("csv-parse/sync");
+const fs = require("fs");
 
 const {
     verifyTokenAndAuthorization,
@@ -8,7 +13,67 @@ const {
 
 const router = require("express").Router();
 
-const pathToFile = "../sumki/public";
+const pathToFile = "../Bags-Shop/public";
+const pathForName = "/src/productImg/";
+
+router.post(
+    "/manyphotos",
+    verifyTokenAndAuthorization,
+    fileUpload(),
+    async (req, res) => {
+        console.log(req.files);
+        if (!req.files.photos) return res.status(500).json(false);
+        const saveName = "./" + req.files.photos.name;
+        // extractZip()
+        try {
+            //save file
+            console.log("save file");
+            await req.files.photos.mv(saveName);
+            //extract file items
+            console.log("extract");
+            const status = await extractZip(saveName);
+            //remove file
+            console.log("delete file");
+            fs.unlinkSync(saveName);
+
+            if (!status) throw new Error();
+
+            res.status(200).json({ status: true });
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(false);
+        }
+        // res.status(200).json({ status: true });
+    }
+);
+
+router.post(
+    "/manyproducts",
+    verifyTokenAndAuthorization,
+    fileUpload(),
+    async (req, res) => {
+        if (!req.files.csv) return res.status(500).json(false);
+
+        const saveName = "./" + req.files.csv.name;
+
+        try {
+            //save file
+            console.log("save file");
+            await req.files.csv.mv(saveName);
+            //read file and get data for save in db
+            const productsForSave = await readCsvFile(saveName);
+            console.log("save products");
+            await Product.insertMany(productsForSave);
+            //remove file
+            console.log("delete file");
+            fs.unlinkSync(saveName);
+            res.status(200).json({ status: true });
+        } catch (err) {
+            console.log(err);
+            res.status(500).json(false);
+        }
+    }
+);
 
 router.post(
     "/",
@@ -22,7 +87,7 @@ router.post(
             for (const image in req.files) {
                 if (!/^image/.test(req.files[image].mimetype))
                     return res.sendStatus(503);
-                const pathForName = "/src/productImg/";
+
                 req.files[image].mv(
                     pathToFile + pathForName + req.files[image].name
                 );
@@ -45,7 +110,7 @@ router.post(
             try {
                 const newProduct = new Product(product);
                 await newProduct.save();
-                console.log(newProduct);
+                // console.log(newProduct);
                 // await newProduct.save();
                 res.status(200).json({ status: true, id: newProduct._id });
             } catch (e) {
@@ -78,7 +143,7 @@ router.get("/one/:id", async (req, res) => {
     } else {
         try {
             const product = await Product.findById(id);
-            console.log(product);
+            // console.log(product);
             if (product) {
                 res.status(200).json({ status: true, product });
             } else {
@@ -106,3 +171,63 @@ router.get("/all", async (req, res) => {
 });
 
 module.exports = router;
+
+async function readCsvFile(file) {
+    const content = fs.readFileSync(file, "utf8");
+
+    const output = await parse(content, { columns: true });
+
+    return output.map((item) => {
+        const product = {
+            title: item.title,
+            brand: item.brand,
+            type: {
+                ua: item.type_ua,
+                ru: item.type_ru,
+            },
+            about: {
+                ua: item.about_ua,
+                ru: item.about_ru,
+            },
+            params: item.params,
+            imgs: item.imgs.split(",").map((item) => pathForName + item),
+        };
+
+        const variants = [];
+        for (const key in item) {
+            if (key.includes("variant")) {
+                if (item[key].length > 0) {
+                    let keys = key.split("_");
+                    if (variants[keys[1] - 1]) {
+                        variants[keys[1] - 1][keys[2]] =
+                            keys[2] !== "color" ? +item[key] : item[key];
+                    } else {
+                        variants.push({
+                            [keys[2]]:
+                                keys[2] !== "color" ? +item[key] : item[key],
+                        });
+                    }
+                }
+            }
+        }
+
+        return {
+            ...product,
+            variants,
+        };
+    });
+}
+
+async function extractZip(file) {
+    console.log(path.resolve(pathToFile + pathForName + "/"));
+    try {
+        await extract(file, {
+            dir: path.resolve(pathToFile + pathForName + "/"),
+        });
+        return true;
+    } catch (err) {
+        console.log(err);
+        return false;
+        // handle any errors
+    }
+}
