@@ -53,7 +53,7 @@ const getLazyImage = ({ src, alt = "" }) =>
                         default: getImageComponent({ src, alt }),
                     });
                 };
-                image.onerror = reject;
+                image.onerror = "";
                 image.src = src;
             })
     );

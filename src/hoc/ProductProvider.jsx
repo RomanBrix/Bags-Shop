@@ -23,14 +23,8 @@ function ProductProvider({ children }) {
     const [priceValue, setPriceValue] = useState(null);
 
     useEffect(() => {
-        publicRequest.get("/products/all").then(({ data }) => {
-            if (data.status) {
-                // console.log(data.products);
-                setAllProducts(data.products);
-            } else {
-                setAllProducts([]);
-            }
-        });
+        getAllProducts();
+
         publicRequest
             .get("/filters/?type=type")
             .then(({ data }) => {
@@ -50,27 +44,35 @@ function ProductProvider({ children }) {
     }, []);
 
     useEffect(() => {
+        // console.log("here");
         if (typeList) {
             if (!activeType || activeType === "") {
                 // console.log("tyyt");
                 setProducts(allProducts);
+                // console.log("all");
             } else {
+                // console.log(activeType);
+                // console.log(typeList);
                 const type = typeList.filter((item) => item._id === activeType);
+                // console.log(type);
                 const typedProducts = allProducts.filter(
                     (item) => item.type.ua === type[0].name.ua
                 );
+                // console.log(typedProducts);
+
                 setProducts(typedProducts);
             }
         }
     }, [activeType, typeList]);
 
     useEffect(() => {
-        if (products.length > 1) {
+        if (products.length > 0) {
             let prices = [];
             products.forEach((item) => {
                 item.variants.forEach((variant) => prices.push(variant.price));
             });
             prices.sort((a, b) => a - b);
+            // console.log(prices);
             if (prices.length > 1) {
                 setPriceForFilter([prices[0], prices[prices.length - 1]]);
             } else {
@@ -160,6 +162,17 @@ function ProductProvider({ children }) {
         return {
             error: "No Match",
         };
+    }
+
+    function getAllProducts() {
+        publicRequest.get("/products/all").then(({ data }) => {
+            if (data.status) {
+                // console.log(data.products);
+                setAllProducts(data.products);
+            } else {
+                setAllProducts([]);
+            }
+        });
     }
 
     const val = {

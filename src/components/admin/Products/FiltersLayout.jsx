@@ -11,17 +11,29 @@ export default function FiltersLayout({
     const protectedRequest = createUserAxiosRequest();
     console.log(filters);
     return (
-        <div className="filters-layout">
-            <div className="filters-block">
+        <div
+            className="filters-layout"
+            onClick={() => {
+                setShowFiltersLayout(false);
+            }}
+        >
+            <div
+                className="filters-block"
+                onClick={(e) => {
+                    e.stopPropagation();
+                }}
+            >
                 <div
                     className="close"
                     onClick={() => {
                         setShowFiltersLayout(false);
                     }}
                 >
-                    close
+                    X
                 </div>
-                <h2>Настройка Фильтра: {returnFilterName(type)}</h2>
+                <h2>
+                    Настройка Фильтра: <span>{returnFilterName(type)}</span>
+                </h2>
                 <button className="btn add" onClick={addFilter}>
                     Добавить новый фильтр
                 </button>
@@ -82,10 +94,34 @@ export default function FiltersLayout({
             const name = type === "brand" ? item.name : item.name.ru;
             return (
                 <div className="item" key={index}>
-                    <div className="key">Checkbox</div>
+                    <div className="key">{index + 1}</div>
                     <div className="key">{name}</div>
                     <div className="key">
-                        <button className="delete">Удалить</button>
+                        <button
+                            className="delete"
+                            onClick={() => {
+                                if (!window.confirm("Удалить?")) return;
+                                protectedRequest
+                                    .delete(`/filters/${item._id}?type=${type}`)
+                                    .then((res) => {
+                                        console.log(res);
+                                        if (res.data) {
+                                            toast.success("Фильтр удален");
+                                            loadEvent();
+                                        } else {
+                                            toast.error(
+                                                "Ошибка удаления фильтра"
+                                            );
+                                        }
+                                    })
+                                    .catch((err) => {
+                                        console.log(err);
+                                        toast.error("Ошибка удаления фильтра");
+                                    });
+                            }}
+                        >
+                            Удалить
+                        </button>
                     </div>
                 </div>
             );

@@ -143,10 +143,9 @@ function Header() {
                                     .classList.toggle("small-menu-active");
                             }}
                         >
-                            {" "}
-                            {translate.menu.shop}{" "}
+                            {translate.menu.shop}
                         </li>
-                        <li
+                        {/* <li
                             onClick={() => {
                                 navigate("/shop/bags");
                                 document
@@ -175,7 +174,8 @@ function Header() {
                             }}
                         >
                             {translate.menu.wallets}
-                        </li>
+                        </li> */}
+                        {renderSubMenu(typeList, "mobile")}
                         <li
                             onClick={() => {
                                 navigate("/about");
@@ -247,7 +247,7 @@ function Header() {
         </div>
     );
 
-    function renderSubMenu(menu) {
+    function renderSubMenu(menu, type) {
         if (!menu) return "";
         return menu.map((item, index) => {
             // console.log(item);
@@ -256,6 +256,11 @@ function Header() {
                     key={index}
                     onClick={() => {
                         navigate("/shop/" + item._id);
+                        if (type === "mobile") {
+                            document
+                                .getElementsByClassName("small-menu")[0]
+                                .classList.toggle("small-menu-active");
+                        }
                     }}
                 >
                     {item.name[language]}

@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { createUserAxiosRequest } from "../../../requestMethods";
 import ProductsHead from "./ProductsHead";
+import { prettyDate } from "../../../helpers/helpers";
 
 export default function AllProducts({ allFilters, events }) {
     const [products, setProducts] = useState(null);
@@ -84,7 +85,7 @@ function ProductItem({ product }) {
             <div className="section">{product.title}</div>
             <div className="section">{product.brand}</div>
             <div className="section">{product.variants.length}</div>
-            <div className="section">{product.createdAt}</div>
+            <div className="section">{prettyDate(product.createdAt)}</div>
         </div>
     );
 
