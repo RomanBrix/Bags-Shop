@@ -170,8 +170,6 @@ router.get("/all", async (req, res) => {
     }
 });
 
-module.exports = router;
-
 async function readCsvFile(file) {
     const content = fs.readFileSync(file, "utf8");
 
@@ -231,3 +229,5 @@ async function extractZip(file) {
         // handle any errors
     }
 }
+
+module.exports = router;
