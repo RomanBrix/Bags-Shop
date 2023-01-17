@@ -9,6 +9,7 @@ import Layout from "./components/layouts";
 import MainPage from "./components/main";
 import Product from "./components/products";
 import SingleProduct from "./components/products/SingleProduct";
+import Success from "./components/Success";
 
 function App() {
     const location = useLocation();
@@ -31,6 +32,8 @@ function App() {
                     <Route path="/return" element={<h1>return</h1>} />
                     <Route path="/terms" element={<h1>terms</h1>} />
                     <Route path="/delivery" element={<h1>delivery</h1>} />
+
+                    <Route path="/success" element={<Success />} />
 
                     <Route path="*" element={<h1>Not found</h1>} />
                 </Route>

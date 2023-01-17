@@ -129,6 +129,12 @@
 
                 .active-variant {
                     border-color: $active-color;
+                    .mini-price {
+                        opacity: 1;
+                    }
+                    .holder {
+                        opacity: 0.75;
+                    }
                 }
             }
 

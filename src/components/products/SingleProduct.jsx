@@ -179,6 +179,34 @@ function SingleProduct(props) {
             ? toast.success("Товар додано!")
             : toast.success("Продукт добавлен!");
 
+        const cookieBuy = Cookies.get("buy");
+        const toBuy = cookieBuy ? JSON.parse(cookieBuy) : {};
+        // console.log(product);
+        if (toBuy[product._id]) {
+            if (toBuy[product._id].variants[activeVariant._id]) {
+                toBuy[product._id].variants[activeVariant._id].quanity += 1;
+            } else {
+                toBuy[product._id].variants[activeVariant._id] = {
+                    ...activeVariant,
+                    quanity: 1,
+                };
+            }
+        } else {
+            toBuy[product._id] = {
+                title: product.title,
+                brand: product.brand,
+                imgs: product.imgs,
+                variants: {
+                    [activeVariant._id]: {
+                        ...activeVariant,
+                        quanity: 1,
+                    },
+                },
+            };
+        }
+        console.log(toBuy);
+        Cookies.set("buy", JSON.stringify(toBuy));
+
         /*
         const cookieBuy = Cookies.get("buy");
         const toBuy = cookieBuy ? JSON.parse(cookieBuy) : [];
@@ -234,13 +262,6 @@ function SingleProduct(props) {
                             target.parentElement.click();
                             return;
                         }
-
-                        // console.log(realTarget.classList.contains("variant"));
-                        // console.log(realTarget.parentElement);
-                        // while (realTarget.classList.contains("variant")) {
-                        //     realTarget = realTarget.parentElement;
-                        // }
-                        // changeImg(target);
                         selectVariant(target, item);
                     }}
                     style={
@@ -267,19 +288,6 @@ function SingleProduct(props) {
             );
         });
     }
-    // function changeImg(target) {
-    //     if (target.nodeName !== "IMG") return;
-
-    //     const src = target.dataset.src;
-    //     const variantName = target.dataset.variant;
-    //     console.log(src, variantName);
-    //     const activeVarian = document.getElementsByClassName("active-variant");
-    //     if (activeVarian[0]) activeVarian[0].classList.remove("active-variant");
-
-    //     target.parentElement.classList.toggle("active-variant");
-    //     setVarinatName(variantName);
-    //     setActiveImg(src);
-    // }
 }
 
 const getImageComponent =
