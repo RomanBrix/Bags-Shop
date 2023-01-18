@@ -128,7 +128,7 @@ export default function UserInfo() {
     );
 
     function createOrder() {
-        // if (!checkInfo()) return;
+        if (!checkInfo()) return;
 
         const buy = JSON.parse(Cookies.get("buy"));
 
@@ -166,7 +166,7 @@ export default function UserInfo() {
                     },
                 })
                 .then((res) => {
-                    console.log(res.data);
+                    // console.log(res.data);
                     if (res.data.status) {
                         toast.success("Ваш заказ принят в обработку! Спасибо");
                         toast.success("Ваш номер заказа: " + res.data.id, {
