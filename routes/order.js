@@ -1,12 +1,43 @@
 const Order = require("../models/Order");
 
 // const Filters = require("../models/Filters");
-const {
-    verifyTokenAndAuthorization,
-    verifyTokenAndAdmin,
-} = require("./verifyToken");
+const { verifyTokenAndAuthorization } = require("./verifyToken");
 
 const router = require("express").Router();
+
+router.post("/status", verifyTokenAndAuthorization, async (req, res) => {
+    const { id, status } = req.body;
+
+    try {
+        await Order.findByIdAndUpdate(id, { status: status });
+        res.status(200).json({ status: true });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ status: false });
+    }
+});
+router.get("/all", verifyTokenAndAuthorization, async (req, res) => {
+    try {
+        const orders = await Order.find({}).sort({ createdAt: -1 }).lean();
+        res.status(200).json({ status: true, orders });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ status: false });
+    }
+});
+
+router.get("/:id", verifyTokenAndAuthorization, async (req, res) => {
+    const { id } = req.params;
+    if (!id) res.status(500).json({ status: false });
+    // console.log(req.params);
+    try {
+        const order = await Order.findById(id).sort({ createdAt: -1 }).lean();
+        res.status(200).json({ status: true, order });
+    } catch (err) {
+        console.log(err);
+        res.status(500).json({ status: false });
+    }
+});
 
 router.post("/", async (req, res) => {
     // console.log(req.body);
