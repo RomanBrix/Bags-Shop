@@ -21,10 +21,16 @@ const ProductSchema = new Schema(
                     default: "",
                 },
                 price: { type: Number, default: 1 },
+                discount: { type: Number, default: null },
+                discount_on: { type: Boolean, default: false },
                 imgIndex: { type: Number, default: 0 },
             },
         ],
         params: { type: String, default: "20/14/7" },
+        material: {
+            ua: { type: String, default: null },
+            ru: { type: String, default: null },
+        },
     },
     { timestamps: true }
 );

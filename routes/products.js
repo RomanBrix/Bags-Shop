@@ -184,10 +184,11 @@ async function readCsvFile(file) {
                 ru: item.type_ru,
             },
             about: {
-                ua: item.about_ua,
-                ru: item.about_ru,
+                ua: item?.about_ua || "",
+                ru: item?.about_ru || "",
             },
             params: item.params,
+            material: item?.material || null,
             imgs: item.imgs.split(",").map((item) => pathForName + item),
         };
 
@@ -196,6 +197,8 @@ async function readCsvFile(file) {
             if (key.includes("variant")) {
                 if (item[key].length > 0) {
                     let keys = key.split("_");
+
+                    //ЭТО НЕ ПРАВИЛЬНО ПЕРЕДЕЛАТЬ... долбоеб
                     if (variants[keys[1] - 1]) {
                         variants[keys[1] - 1][keys[2]] =
                             keys[2] !== "color" ? +item[key] : item[key];
