@@ -292,9 +292,24 @@ export default function SingleProduct({ allFilters }) {
                 console.log(res);
                 if (res.data.status) {
                     toast.success("Изминения сохранены!");
-                    setFilesToUpload([]);
+                    // setFilesToUpload([]);
+                    // setProduct({
+                    //     title: "",
+                    //     brand: null,
+                    //     type: {
+                    //         ua: null,
+                    //         ru: null,
+                    //     },
+                    //     about: {
+                    //         ua: "",
+                    //         ru: "",
+                    //     },
+                    //     imgs: [],
+                    //     variants: [],
+                    //     params: "Стандарт",
+                    // });
                     if (res.data?.id) {
-                        // navigate("../" + res.data.id);
+                        navigate("../" + res.data.id);
                     }
                 }
             })

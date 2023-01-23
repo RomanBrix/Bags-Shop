@@ -274,7 +274,7 @@
                         background: #fff;
                     }
                 }
-                &.focus {
+                &:not(:placeholder-shown) {
                     // border-color: #1a91d0;
                     &::placeholder {
                         transition: 0.25s;

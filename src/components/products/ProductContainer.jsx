@@ -47,7 +47,8 @@ function ProductContainer(props) {
                     })
                     .sort((a, b) => a - b);
                 let price =
-                    priceArr.length > 1
+                    priceArr.length > 1 &&
+                    priceArr[0] !== priceArr[priceArr.length - 1]
                         ? `${priceArr[0]} - ${priceArr[priceArr.length - 1]}`
                         : priceArr[0];
                 return (

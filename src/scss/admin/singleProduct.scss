@@ -24,6 +24,9 @@
             padding: 20px 15px;
             box-shadow: 0 7px 10px 2px rgba($color: #000000, $alpha: 0.24);
             margin-bottom: 20px;
+            @media (max-width: 767px) {
+                width: 100%;
+            }
             h2 {
                 margin: 0;
                 margin-bottom: 30px;

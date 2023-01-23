@@ -2,6 +2,14 @@
     box-sizing: border-box;
     padding: 10px 0;
     .center {
+        input[type="file"] {
+            position: absolute;
+            z-index: -1;
+            width: 1px;
+            height: 1px;
+            left: -100%;
+            top: 0;
+        }
         .filters-layout {
             position: fixed;
             width: 100%;
@@ -135,6 +143,15 @@
                     opacity: 0.6;
                 }
             }
+            @media (max-width: 767px) {
+                flex-wrap: wrap;
+                gap: 15px;
+                max-width: 100%;
+                justify-content: space-around;
+                li {
+                    margin-right: 0;
+                }
+            }
         }
     }
 }
@@ -208,6 +225,17 @@
                     &:not(:first-child) {
                         background: rgba($color: #000000, $alpha: 0.15);
                     }
+                }
+            }
+        }
+
+        @media (max-width: 767px) {
+            width: 100%;
+            .product-list {
+                width: 100%;
+                overflow-y: auto;
+                .item {
+                    min-width: 1000px;
                 }
             }
         }

@@ -56,7 +56,7 @@ function SingleProduct(props) {
     }, [activeVariant, product]);
 
     const { language } = useTranslate();
-    console.log(product);
+    // console.log(product);
     if (!product) {
         return (
             <div className="single-product forContainer">
@@ -98,41 +98,6 @@ function SingleProduct(props) {
                         </div>
                         <div className="content">{product.params}</div>
                     </div>
-
-                    {/*
-                    VariantImg.length > 1 ? (
-                        <>
-                            <p className="var-head">
-                                {language === "ua" ? "Варіант" : "Вариант"}:
-                            </p>
-                            <div className="variants">
-                                {VariantImg.map((item, index) => {
-                                    return (
-                                        <div
-                                            className="variant"
-                                            key={index}
-                                            onClick={({ target }) => {
-                                                changeImg(target);
-                                            }}
-                                        >
-                                            <Suspense
-                                                fallback={
-                                                    <div className="loading">
-                                                        <Loader />
-                                                    </div>
-                                                }
-                                            >
-                                                {React.createElement(item)}
-                                            </Suspense>
-                                        </div>
-                                    );
-                                })}
-                            </div>
-                        </>
-                    ) : (
-                        <></>
-                    )
-                */}
 
                     <p className="var-head">
                         {product.variants.length > 1
@@ -204,7 +169,7 @@ function SingleProduct(props) {
                 },
             };
         }
-        console.log(toBuy);
+        // console.log(toBuy);
         Cookies.set("buy", JSON.stringify(toBuy));
 
         /*
@@ -318,7 +283,9 @@ const getLazyImage = ({ src, alt = "", dataSrc = "", dataVariant = "" }) =>
                         }),
                     });
                 };
-                image.onerror = reject;
+                image.onerror = (err) => {
+                    console.log(err);
+                };
                 image.src = src;
             })
     );

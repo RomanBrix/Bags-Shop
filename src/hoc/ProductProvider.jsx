@@ -72,6 +72,7 @@ function ProductProvider({ children }) {
                 item.variants.forEach((variant) => prices.push(variant.price));
             });
             prices.sort((a, b) => a - b);
+
             // console.log(prices);
             if (prices.length > 1) {
                 setPriceForFilter([prices[0], prices[prices.length - 1]]);
@@ -81,7 +82,7 @@ function ProductProvider({ children }) {
             // setPriceValue(null)
         }
         // setPriceForFilter
-    }, [products.length]);
+    }, [products]);
 
     // let filteredProducts = products.map((item, index) => {
     //     return item.filter((obj) => {
@@ -99,6 +100,9 @@ function ProductProvider({ children }) {
             .sort((a, b) => a - b);
         const minPrice = priceValue ? priceValue[0] : priceForFilter[0];
         const maxPrice = priceValue ? priceValue[1] : priceForFilter[1];
+        // console.log(product);
+        // console.log(minPrice);
+        // console.log(maxPrice);
         return (
             priceArr[0] >= minPrice && priceArr[priceArr.length - 1] <= maxPrice
         );

@@ -25,7 +25,7 @@ export default function UserInfo() {
                     <input
                         type="text"
                         id="name"
-                        placeholder="name"
+                        placeholder="Имя"
                         value={info.name}
                         onChange={changeInfo}
                     />
@@ -35,7 +35,7 @@ export default function UserInfo() {
                     <input
                         type="text"
                         id="secondname"
-                        placeholder="secondname"
+                        placeholder="Фамилия"
                         value={info.secondname}
                         onChange={changeInfo}
                     />
@@ -45,7 +45,7 @@ export default function UserInfo() {
                     <input
                         type="text"
                         id="phone"
-                        placeholder="phone"
+                        placeholder="Телефон"
                         value={info.phone}
                         onChange={changeInfo}
                     />
@@ -55,7 +55,7 @@ export default function UserInfo() {
                     <input
                         type="text"
                         id="address"
-                        placeholder="address"
+                        placeholder="Адрес"
                         value={info.address}
                         onChange={changeInfo}
                     />
