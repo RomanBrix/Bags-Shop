@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import useTranslate from "../../hook/useTranslate";
 import { publicRequest } from "../../requestMethods";
 
 export default function UserInfo() {
@@ -17,54 +18,58 @@ export default function UserInfo() {
 
     const navigate = useNavigate();
 
+    const { getTranslateBlock } = useTranslate();
+    const translate = getTranslateBlock("userCart");
+
+    // console.log(translate);
     return (
         <div className="cart user-cart forContainer">
             <div className="container">
-                <h1>Личная информация</h1>
+                <h1>{translate.header}</h1>
                 <div className="inputs">
                     <input
                         type="text"
                         id="name"
-                        placeholder="Имя"
+                        placeholder={translate.name}
                         value={info.name}
                         onChange={changeInfo}
                     />
-                    <label htmlFor="name">Имя</label>
+                    <label htmlFor="name">{translate.name}</label>
                 </div>
                 <div className="inputs">
                     <input
                         type="text"
                         id="secondname"
-                        placeholder="Фамилия"
+                        placeholder={translate.secondname}
                         value={info.secondname}
                         onChange={changeInfo}
                     />
-                    <label htmlFor="secondname">Фамилия</label>
+                    <label htmlFor="secondname">{translate.secondname}</label>
                 </div>
                 <div className="inputs">
                     <input
                         type="text"
                         id="phone"
-                        placeholder="Телефон"
+                        placeholder={translate.phone}
                         value={info.phone}
                         onChange={changeInfo}
                     />
-                    <label htmlFor="phone">Телефон</label>
+                    <label htmlFor="phone">{translate.phone}</label>
                 </div>
                 <div className="inputs">
                     <input
                         type="text"
                         id="address"
-                        placeholder="Адрес"
+                        placeholder={translate.address}
                         value={info.address}
                         onChange={changeInfo}
                     />
-                    <label htmlFor="address">Адрес</label>
+                    <label htmlFor="address">{translate.address}</label>
                 </div>
                 <div className="inputs-radio">
-                    <h2>Метод Доставки</h2>
+                    <h2>{translate.courier}</h2>
                     <div className="radio">
-                        <label htmlFor="courier">Курьер</label>
+                        <label htmlFor="courier">{translate.courier}</label>
                         <input
                             type="radio"
                             name="delivery"
@@ -75,7 +80,7 @@ export default function UserInfo() {
                         />
                     </div>
                     <div className="radio">
-                        <label htmlFor="np">Нова Почта</label>
+                        <label htmlFor="np">{translate.np}</label>
                         <input
                             type="radio"
                             name="delivery"
@@ -86,7 +91,7 @@ export default function UserInfo() {
                         />
                     </div>
                     <div className="radio">
-                        <label htmlFor="own">Самовывоз</label>
+                        <label htmlFor="own">{translate.own}</label>
                         <input
                             type="radio"
                             name="delivery"
@@ -98,9 +103,9 @@ export default function UserInfo() {
                     </div>
                 </div>
                 <div className="inputs-radio">
-                    <h2>Метод Оплаты</h2>
+                    <h2>{translate.payMethod}</h2>
                     <div className="radio">
-                        <label htmlFor="card">Карта</label>
+                        <label htmlFor="card">{translate.card}</label>
                         <input
                             type="radio"
                             name="pay"
@@ -111,7 +116,9 @@ export default function UserInfo() {
                         />
                     </div>
                     <div className="radio">
-                        <label htmlFor="ondelivery">При получении</label>
+                        <label htmlFor="ondelivery">
+                            {translate.ondelivery}
+                        </label>
                         <input
                             type="radio"
                             name="pay"
@@ -122,7 +129,7 @@ export default function UserInfo() {
                         />
                     </div>
                 </div>
-                <button onClick={createOrder}>Подтвердить заказ</button>
+                <button onClick={createOrder}>{translate.btn}</button>
             </div>
         </div>
     );
@@ -168,8 +175,8 @@ export default function UserInfo() {
                 .then((res) => {
                     // console.log(res.data);
                     if (res.data.status) {
-                        toast.success("Ваш заказ принят в обработку! Спасибо");
-                        toast.success("Ваш номер заказа: " + res.data.id, {
+                        toast.success(translate.alerts.ok);
+                        toast.success(translate.alerts.orderId + res.data.id, {
                             autoClose: 15000,
                         });
                         setInfo({
@@ -182,33 +189,33 @@ export default function UserInfo() {
                         // navigate to thank page
                         navigate(`/success?id=${res.data.id}`);
                     } else {
-                        toast.warning("Что то пошло не так");
+                        toast.warning(translate.alerts.warn);
                     }
                 })
                 .catch((err) => {
                     console.log(err);
-                    toast.error("Что то пошло не так");
+                    toast.error(translate.alerts.error);
                 });
         } else {
-            toast.warning("Оплата картой не доступна");
+            toast.warning(translate.alerts.cardError);
         }
     }
 
     function checkInfo() {
         if (info.name.length < 3) {
-            toast.warning("Имя не указанно");
+            toast.warning(translate.alerts.name);
             return false;
         }
         if (info.secondname.length < 3) {
-            toast.warning("Фамилия не указанна");
+            toast.warning(translate.alerts.secName);
             return false;
         }
         if (info.phone.length < 9) {
-            toast.warning("Телефон не указанно");
+            toast.warning(translate.alerts.address);
             return false;
         }
         if (delivery !== "np" && info.address.length < 5) {
-            toast.warning("Адресс не указан");
+            toast.warning(translate.alerts.phone);
             return false;
         }
         return true;

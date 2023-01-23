@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useLocation } from "react-router-dom";
+import useTranslate from "../hook/useTranslate";
 
 export default function Success() {
     const location = useLocation();
@@ -13,12 +14,15 @@ export default function Success() {
             //get order
         }
     }, []);
+    const { getTranslateBlock } = useTranslate();
+    const translate = getTranslateBlock("successPage");
+    console.log(translate);
     if (!id) {
         return (
             <div className="success forContainer">
                 <div className="container">
-                    <h1>Спасибо!</h1>
-                    <p>Ваш заказ принят!</p>
+                    <h1>{translate.head}</h1>
+                    <p>{translate.ok}</p>
                 </div>
             </div>
         );
@@ -26,8 +30,8 @@ export default function Success() {
     return (
         <div className="success forContainer">
             <div className="container">
-                <h1>Спасибо!</h1>
-                <p>Ваш заказ принят!</p>
+                <h1>{translate.head}</h1>
+                <p>{translate.ok}</p>
             </div>
         </div>
     );

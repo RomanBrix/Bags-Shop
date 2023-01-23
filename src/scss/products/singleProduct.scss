@@ -68,13 +68,15 @@
                 display: flex;
                 align-items: center;
                 justify-content: flex-start;
+                flex-wrap: wrap;
+                gap: 30px;
                 .variant {
                     overflow: hidden;
                     cursor: pointer;
                     width: 90px;
                     height: 90px;
                     border: 1px solid transparent;
-                    margin-right: 30px;
+                    // margin-right: 30px;
                     transition: 0.25s;
                     // object-fit: contain;
                     background-position: center center;
@@ -146,6 +148,34 @@
                 margin-top: 30px;
                 .price {
                     font-size: 24px;
+                    .discount {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: flex-start;
+                        justify-content: flex-start;
+                        .sale {
+                            color: rgba($color: #abb8c3, $alpha: 1);
+                            margin-right: 12px;
+                            display: block;
+                            position: relative;
+                            &:after {
+                                content: "";
+                                position: absolute;
+                                width: 120%;
+                                height: 2px;
+                                background: #abb8c3;
+                                top: 50%;
+                                left: -10%;
+                            }
+                        }
+                        .dis-price {
+                            color: #eb144c;
+                        }
+
+                        & + .active-price {
+                            display: none;
+                        }
+                    }
                 }
                 .btn-buy {
                     background: #1d2120;

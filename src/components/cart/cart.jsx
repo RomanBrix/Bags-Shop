@@ -106,9 +106,9 @@ function Cart(props) {
                             <div
                                 className="img"
                                 style={{
-                                    backgroundImage: `url(${
+                                    backgroundImage: `url("${
                                         toBuy[key].imgs[imgIndex ? imgIndex : 0]
-                                    })`,
+                                    }")`,
                                 }}
                             >
                                 {/* <img src={item.img} alt={item.typeName} /> */}

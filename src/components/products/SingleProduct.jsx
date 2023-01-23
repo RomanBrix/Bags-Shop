@@ -38,7 +38,19 @@ function SingleProduct(props) {
     useEffect(() => {
         if (product) {
             if (activeVariant) {
-                setActivePrice(activeVariant.price);
+                const price = activeVariant.discount_on ? (
+                    <span className="discount">
+                        <span className="sale">
+                            {activeVariant.discount} UAH
+                        </span>
+                        <span className="dis-price">
+                            {activeVariant.price} UAH
+                        </span>
+                    </span>
+                ) : (
+                    activeVariant.price
+                );
+                setActivePrice(price);
             } else {
                 const priceArr = product.variants
                     .map((item) => {
@@ -85,7 +97,9 @@ function SingleProduct(props) {
 
                     <div className="about">{product.about[language]}</div>
                     <div className="info-item">
-                        <div className="headline">Тип продукта</div>
+                        <div className="headline">
+                            {language === "ua" ? "Вид товару" : "Вид товара"}
+                        </div>
                         <div className="content">{product.type[language]}</div>
                     </div>
                     <div className="info-item">
@@ -98,6 +112,17 @@ function SingleProduct(props) {
                         </div>
                         <div className="content">{product.params}</div>
                     </div>
+
+                    {product?.material && (
+                        <div className="info-item">
+                            <div className="headline">
+                                {language === "ua" ? "Матерiал" : "Материал"}
+                            </div>
+                            <div className="content">
+                                {product.material[language]}
+                            </div>
+                        </div>
+                    )}
 
                     <p className="var-head">
                         {product.variants.length > 1
@@ -113,7 +138,10 @@ function SingleProduct(props) {
                     </div>
 
                     <div className="bottom">
-                        <div className="price">{activePrice} UAH.</div>
+                        <div className="price">
+                            {activePrice}{" "}
+                            <span className="active-price">UAH.</span>
+                        </div>
                         <div
                             className="btn-buy"
                             onClick={() => {
@@ -218,6 +246,17 @@ function SingleProduct(props) {
     }
     function renderVariants(variants) {
         return variants.map((item, index) => {
+            const style =
+                item.imgIndex !== null
+                    ? {
+                          backgroundImage: `url("${
+                              product.imgs[item.imgIndex]
+                          }")`,
+                      }
+                    : { background: `${item.color}` };
+
+            // const price = item.discount_on ? item.discount : item.price;
+            // console.log(style);
             return (
                 <div
                     className="variant"
@@ -229,15 +268,7 @@ function SingleProduct(props) {
                         }
                         selectVariant(target, item);
                     }}
-                    style={
-                        item.imgIndex !== null
-                            ? {
-                                  backgroundImage: `url(${
-                                      product.imgs[item.imgIndex]
-                                  })`,
-                              }
-                            : { background: `${item.color}` }
-                    }
+                    style={style}
                 >
                     <div
                         className="holder"

@@ -25,6 +25,10 @@ export default function SingleProduct({ allFilters }) {
         imgs: [],
         variants: [],
         params: "Стандарт",
+        material: {
+            ua: "",
+            ru: "",
+        },
     });
     const [filesToUpload, setFilesToUpload] = useState([]);
 
@@ -51,7 +55,17 @@ export default function SingleProduct({ allFilters }) {
                 .then(({ data }) => {
                     // console.log(res);
                     if (data.status) {
-                        setProduct(data.product);
+                        if (data.product?.material) {
+                            setProduct(data.product);
+                        } else {
+                            setProduct({
+                                ...data.product,
+                                material: {
+                                    ua: "",
+                                    ru: "",
+                                },
+                            });
+                        }
                         setLoading(false);
                     } else {
                         navigate("../");
@@ -174,6 +188,27 @@ export default function SingleProduct({ allFilters }) {
                         <label htmlFor="params">Размер</label>
                     </div>
 
+                    <div className="inputs">
+                        <input
+                            type="text"
+                            id="material_ua"
+                            value={product.material?.ua}
+                            onChange={changeAboutVal}
+                            placeholder={" "}
+                        />
+                        <label htmlFor="material_ua">Материал UA</label>
+                    </div>
+                    <div className="inputs">
+                        <input
+                            type="text"
+                            id="material_ru"
+                            value={product.material?.ru}
+                            onChange={changeAboutVal}
+                            placeholder={" "}
+                        />
+                        <label htmlFor="material_ru">Материал RU</label>
+                    </div>
+
                     <div className="inputs-select">
                         <div className="label">Бренд:</div>
                         <div className="select close" ref={brandListRef}>
@@ -282,6 +317,22 @@ export default function SingleProduct({ allFilters }) {
                 bodyFormData.append(file.name, file);
             });
         }
+
+        // const productToSave = {
+        //     ...product,
+        //     variants: product.variants.map((variant) => {
+        //         const { discount_on, discount, price,...other } = variant;
+        //         if (variant.discount_on) {
+        //             return {
+        //                 ...other,
+        //                 discount: price,
+        //                 price: discount
+        //             };
+        //         } else {
+        //             return variant;
+        //         }
+        //     }),
+        // };
 
         bodyFormData.append("product", JSON.stringify(product));
         e.preventDefault();
@@ -399,6 +450,8 @@ export default function SingleProduct({ allFilters }) {
                 {
                     color: "#00D084",
                     price: 1,
+                    discount_on: false,
+                    discount: 1,
                     imgIndex: null,
                 },
             ],
@@ -486,6 +539,22 @@ function VariantsListItem({
                     />
                 )}
             </div>
+            <div className="checkbox">
+                <label htmlFor={`discount_on_${index}`}>Включить скидку</label>
+                <input
+                    type="checkbox"
+                    name="discount"
+                    id={`discount_on_${index}`}
+                    value={item.discount_on}
+                    checked={item.discount_on}
+                    onChange={({ target }) => {
+                        changeVariant(
+                            { ...item, discount_on: target.checked },
+                            index
+                        );
+                    }}
+                />
+            </div>
             <div className="price inputs">
                 <input
                     type="number"
@@ -495,8 +564,28 @@ function VariantsListItem({
                         changeVariant({ ...item, price: target.value }, index);
                     }}
                 />
-                <label htmlFor={`price_${index}`}>Цена</label>
+                <label htmlFor={`price_${index}`}>
+                    {item.discount_on ? "Цена со скидкой" : "Цена"}
+                </label>
             </div>
+
+            {item.discount_on && (
+                <div className="discount inputs">
+                    <input
+                        type="number"
+                        id={`discount_${index}`}
+                        value={item.discount}
+                        onChange={({ target }) => {
+                            changeVariant(
+                                { ...item, discount: +target.value },
+                                index
+                            );
+                        }}
+                    />
+                    <label htmlFor={`discount_${index}`}>Цена без скидки</label>
+                </div>
+            )}
+
             <div className="selectphoto">
                 <p>
                     {item.imgIndex !== null ? (
