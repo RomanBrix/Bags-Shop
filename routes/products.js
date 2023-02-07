@@ -13,7 +13,8 @@ const {
 
 const router = require("express").Router();
 
-const pathToFile = "../Bags-Shop/public";
+// const pathToFile = "../Bags-Shop/public";
+const pathToFile = "..";
 const pathForName = "/src/productImg/";
 
 router.post(
