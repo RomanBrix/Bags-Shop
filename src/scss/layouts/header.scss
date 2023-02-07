@@ -150,7 +150,7 @@
                     .sub {
                         z-index: 5;
                         position: absolute;
-                        width: 100%;
+                        min-width: 100%;
                         list-style: none;
                         top: 100%;
                         left: -4px;

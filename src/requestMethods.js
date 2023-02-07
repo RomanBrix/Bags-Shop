@@ -1,6 +1,7 @@
 import axios from "axios";
 
 const BASE_URL = "http://localhost:1488/api";
+// const BASE_URL = "https://api.bagsdereve.com/api";
 
 let user = JSON.parse(localStorage.getItem("persist:root"))?.user;
 let currentUser = user && JSON.parse(user).currentUser;

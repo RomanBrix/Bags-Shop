@@ -73,13 +73,9 @@ function Header() {
                                     e.stopPropagation();
                                 }}
                             >
-                                {/* <li onClick={()=>{navigate('/shop/bags')}}>{translate.menu.bag}</li>
-                                <li onClick={()=>{navigate('/shop/backpacks')}}>{translate.menu.backpack}</li>
-                                <li onClick={()=>{navigate('/shop/wallets')}}>{translate.menu.wallets}</li> */}
                                 {renderSubMenu(typeList)}
                             </ul>
                         </li>
-                        {/* <li onClick={()=>{navigate('/brands')}}>{translate.menu.brand}</li> */}
                         <li
                             onClick={() => {
                                 navigate("/about");
@@ -145,36 +141,7 @@ function Header() {
                         >
                             {translate.menu.shop}
                         </li>
-                        {/* <li
-                            onClick={() => {
-                                navigate("/shop/bags");
-                                document
-                                    .getElementsByClassName("small-menu")[0]
-                                    .classList.toggle("small-menu-active");
-                            }}
-                        >
-                            {translate.menu.bag}
-                        </li>
-                        <li
-                            onClick={() => {
-                                navigate("/shop/backpacks");
-                                document
-                                    .getElementsByClassName("small-menu")[0]
-                                    .classList.toggle("small-menu-active");
-                            }}
-                        >
-                            {translate.menu.backpack}
-                        </li>
-                        <li
-                            onClick={() => {
-                                navigate("/shop/wallets");
-                                document
-                                    .getElementsByClassName("small-menu")[0]
-                                    .classList.toggle("small-menu-active");
-                            }}
-                        >
-                            {translate.menu.wallets}
-                        </li> */}
+
                         {renderSubMenu(typeList, "mobile")}
                         <li
                             onClick={() => {
@@ -271,7 +238,7 @@ function Header() {
 
     function changeLang(target) {
         const lang = target.dataset.name;
-        console.log(lang);
+        // console.log(lang);
         changeLanguage(lang);
     }
 }

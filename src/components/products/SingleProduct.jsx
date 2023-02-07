@@ -1,7 +1,7 @@
 import { lazy, Suspense, useEffect, useState } from "react";
 import React from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import useProduct from "../../hook/useProduct";
+// import useProduct from "../../hook/useProduct";
 import { ReactComponent as Loader } from "../svg/hearts.svg";
 import Cookies from "js-cookie";
 import useTranslate from "../../hook/useTranslate";
@@ -34,6 +34,7 @@ function SingleProduct(props) {
                 console.log(err);
                 navigate(-1);
             });
+        // eslint-disable-next-lin
     }, []);
     useEffect(() => {
         if (product) {
@@ -52,19 +53,84 @@ function SingleProduct(props) {
                 );
                 setActivePrice(price);
             } else {
-                const priceArr = product.variants
-                    .map((item) => {
-                        return item.price;
-                    })
-                    .sort((a, b) => a - b);
-                let price =
-                    priceArr.length > 1
-                        ? `${priceArr[0]} - ${priceArr[priceArr.length - 1]}`
-                        : priceArr[0];
+                // console.log(product.variants);
+                const discounts = [];
+                const discountsIndex = [];
+                const priceArr = product.variants.map((item, index) => {
+                    //
+                    if (item.discount) {
+                        discounts.push(item.discount);
+                        discountsIndex.push(index);
+                    }
+                    return item.price;
+                });
 
-                setActivePrice(price);
+                if (discounts.length === 0) {
+                    let price =
+                        priceArr.sort((a, b) => a - b).length > 1
+                            ? `${priceArr[0]} - ${
+                                  priceArr[priceArr.length - 1]
+                              }`
+                            : priceArr[0];
+
+                    setActivePrice(price);
+                } else if (discounts.length < priceArr.length) {
+                    discounts.sort((a, b) => a - b);
+                    const sortedDefPrice = priceArr
+                        .filter((item, index) => {
+                            return !discountsIndex.includes(index);
+                        })
+                        .sort((a, b) => a - b);
+                    const maxDiscount = discounts[discounts.length - 1];
+                    const maxDef = sortedDefPrice[sortedDefPrice.length - 1];
+
+                    setActivePrice(
+                        <span className="discount">
+                            <span className="sale">
+                                {/* {maxDiscount > maxDef} */}
+                                {sortedDefPrice[0]}-{maxDiscount} UAH
+                            </span>
+                            <span className="dis-price">
+                                {discounts[0]}-{maxDef} UAH
+                            </span>
+                        </span>
+                    );
+                } else if (
+                    discounts.length === priceArr.length &&
+                    discounts.length !== 1
+                ) {
+                    discounts.sort((a, b) => a - b);
+                    const sortedDefPrice = priceArr.sort((a, b) => a - b);
+
+                    setActivePrice(
+                        <span className="discount">
+                            <span className="sale">
+                                {discounts[0]}-{discounts[discounts.length - 1]}{" "}
+                                UAH
+                            </span>
+                            <span className="dis-price">
+                                {sortedDefPrice[0]}-
+                                {sortedDefPrice[sortedDefPrice.length - 1]} UAH
+                            </span>
+                        </span>
+                    );
+                } else if (
+                    discounts.length === priceArr.length &&
+                    discounts.length === 1
+                ) {
+                    setActivePrice(
+                        <span className="discount">
+                            <span className="sale">
+                                {discounts[0]}
+                                UAH
+                            </span>
+                            <span className="dis-price">{priceArr[0]} UAH</span>
+                        </span>
+                    );
+                }
             }
         }
+        // eslint-disable-next-lin
     }, [activeVariant, product]);
 
     const { language } = useTranslate();
@@ -91,6 +157,11 @@ function SingleProduct(props) {
                     >
                         <MainImg />
                     </Suspense>
+                    <div className="img-layer-contoller">
+                        <div className="dots">{/* dots */}</div>
+                        <div className="left">{/* left */}</div>
+                        <div className="right">{/* right */}</div>
+                    </div>
                 </div>
                 <div className="info">
                     <h2>{product.title}</h2>
@@ -108,7 +179,7 @@ function SingleProduct(props) {
                     </div>
                     <div className="info-item">
                         <div className="headline">
-                            {language === "ua" ? "Параметри" : "Параметры"}
+                            {language === "ua" ? "Розмір" : "Размер"}
                         </div>
                         <div className="content">{product.params}</div>
                     </div>
@@ -139,7 +210,7 @@ function SingleProduct(props) {
 
                     <div className="bottom">
                         <div className="price">
-                            {activePrice}{" "}
+                            {activePrice}
                             <span className="active-price">UAH.</span>
                         </div>
                         <div

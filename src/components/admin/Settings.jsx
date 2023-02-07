@@ -1,3 +1,4 @@
+import axios from "axios";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { toast } from "react-toastify";
@@ -11,6 +12,7 @@ export default function Settings({ user }) {
         password: "",
     });
     const [userList, setUserList] = useState(null);
+    const [loading, setLoading] = useState(false);
     const protectedRequest = createUserAxiosRequest();
     const dispatch = useDispatch();
 
@@ -71,9 +73,40 @@ export default function Settings({ user }) {
                         )}
                     </div>
                 </div>
+
+                <div className="block">
+                    <h2>Обновить "Новоя Почта"</h2>
+                    <p>
+                        Подгрузить/обновить филиалы, почтоматы и отделы новой
+                        почты
+                    </p>
+                    <button className="btn" onClick={updateNovaPochta}>
+                        Обновить
+                    </button>
+                </div>
             </div>
         </div>
     );
+
+    async function updateNovaPochta() {
+        if (loading) {
+            toast.warn("данные обновляются, подождите");
+            return;
+        }
+        setLoading(true);
+
+        protectedRequest
+            .post("/np/")
+            .then(({ data }) => {
+                console.log(data);
+                toast.success("Данные обновленны");
+                setLoading(false);
+            })
+            .catch((err) => {
+                toast.error("Ошибка");
+                setLoading(false);
+            });
+    }
 
     async function addNewUser() {
         const username = window.prompt("Укажите username");

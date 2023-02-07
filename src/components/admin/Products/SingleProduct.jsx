@@ -83,6 +83,7 @@ export default function SingleProduct({ allFilters }) {
     }, []);
     // const
     // console.log(product);
+    // console.log(filesToUpload);
     if (loading)
         return (
             <div className="admin loading-page">
@@ -532,6 +533,37 @@ function VariantsListItem({
                     <TwitterPicker
                         color={item.color}
                         triangle={"hide"}
+                        colors={[
+                            "#FF6900",
+                            "#FCB900",
+                            "#7BDCB5",
+                            "#00D084",
+                            "#8ED1FC",
+                            "#0693E3",
+                            "#ABB8C3",
+                            "#EB144C",
+                            "#F78DA7",
+                            "#9900EF",
+                            "#333",
+
+                            "#b59b7c",
+                            "#FFFF66",
+                            "#45322E",
+                            "#ffa500",
+                            "#000",
+                            "#8039c3",
+                            "#fff",
+                            "#f80000",
+                            "#00008b",
+                            "#ff1493",
+                            "#808080",
+                            "#c0c0c0",
+                            "#b8860B",
+                            "#e9e3ce",
+                            "#013220",
+                            "#c154c1",
+                            "#fefe",
+                        ]}
                         onChangeComplete={(color) => {
                             changeVariant({ ...item, color: color.hex }, index);
                             setShowPicker(false);
@@ -588,7 +620,8 @@ function VariantsListItem({
 
             <div className="selectphoto">
                 <p>
-                    {item.imgIndex !== null ? (
+                    {item.imgIndex !== null &&
+                    (product.imgs.length > 0 || filesToUpload.length > 0) ? (
                         <img
                             src={
                                 item.imgIndex >= product.imgs.length

@@ -239,6 +239,15 @@
                 transition: 0.25s;
                 cursor: text;
             }
+            .np-input {
+                margin-bottom: 30px;
+            }
+
+            .np-input .select__menu {
+                width: 100%;
+                max-width: 350px;
+            }
+            .np-input .select__control,
             input {
                 width: 100%;
                 max-width: 350px;
@@ -297,6 +306,7 @@
             // h2 {
             // width: 100%;
             // }
+            margin-bottom: 30px;
             .radio {
                 display: flex;
                 align-items: center;

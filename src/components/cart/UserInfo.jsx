@@ -1,10 +1,12 @@
 import Cookies from "js-cookie";
 import { useState } from "react";
-import { useEffect } from "react";
+// import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import useTranslate from "../../hook/useTranslate";
 import { publicRequest } from "../../requestMethods";
+import Select from "react-select";
+import { useEffect } from "react";
 
 export default function UserInfo() {
     const [info, setInfo] = useState({
@@ -16,58 +18,56 @@ export default function UserInfo() {
     const [delivery, setDelivery] = useState("courier");
     const [pay, setPay] = useState("ondelivery");
 
+    const [isLoadingNp, setIsLoading] = useState(false);
+    const [listCitiesNp, setListCitiesNp] = useState([]);
+    const [listWarhousesNp, setWarhousesNp] = useState([]);
+
+    const [selectedCityNp, setSelectedCityNp] = useState(null);
+    const [selectedWarehouseNp, setSelectedWarehouseNp] = useState(null);
+
+    useEffect(() => {
+        console.log(selectedCityNp);
+        if (selectedCityNp) {
+            //load warhaose
+            publicRequest
+                .get("/np/warhouses", {
+                    params: { warhouse: selectedCityNp.value },
+                })
+                .then(({ data }) => {
+                    // console.log(data);
+                    // console.log( );
+                    if (data.warhouses.length > 0) {
+                        // console.log(data.warhouses);
+                        setWarhousesNp(
+                            data.warhouses.map((item) => ({
+                                ...item,
+                                value: item.ref,
+                                label: item[`warehouse_${language}`],
+                            }))
+                        );
+                    }
+                })
+                .catch((err) => {
+                    console.log(err);
+                    toast.error("Ошибка");
+                });
+        } else {
+            setWarhousesNp([]);
+            setSelectedWarehouseNp(null);
+        }
+    }, [selectedCityNp]);
+    // console.log(listWarhousesNp);
     const navigate = useNavigate();
 
-    const { getTranslateBlock } = useTranslate();
+    const { getTranslateBlock, language } = useTranslate();
     const translate = getTranslateBlock("userCart");
 
     // console.log(translate);
     return (
         <div className="cart user-cart forContainer">
             <div className="container">
-                <h1>{translate.header}</h1>
-                <div className="inputs">
-                    <input
-                        type="text"
-                        id="name"
-                        placeholder={translate.name}
-                        value={info.name}
-                        onChange={changeInfo}
-                    />
-                    <label htmlFor="name">{translate.name}</label>
-                </div>
-                <div className="inputs">
-                    <input
-                        type="text"
-                        id="secondname"
-                        placeholder={translate.secondname}
-                        value={info.secondname}
-                        onChange={changeInfo}
-                    />
-                    <label htmlFor="secondname">{translate.secondname}</label>
-                </div>
-                <div className="inputs">
-                    <input
-                        type="text"
-                        id="phone"
-                        placeholder={translate.phone}
-                        value={info.phone}
-                        onChange={changeInfo}
-                    />
-                    <label htmlFor="phone">{translate.phone}</label>
-                </div>
-                <div className="inputs">
-                    <input
-                        type="text"
-                        id="address"
-                        placeholder={translate.address}
-                        value={info.address}
-                        onChange={changeInfo}
-                    />
-                    <label htmlFor="address">{translate.address}</label>
-                </div>
                 <div className="inputs-radio">
-                    <h2>{translate.courier}</h2>
+                    <h2>{translate.deliveryMethod}</h2>
                     <div className="radio">
                         <label htmlFor="courier">{translate.courier}</label>
                         <input
@@ -102,6 +102,94 @@ export default function UserInfo() {
                         />
                     </div>
                 </div>
+
+                <h2>{translate.header}</h2>
+                <div className="inputs">
+                    <input
+                        type="text"
+                        id="name"
+                        placeholder={translate.name}
+                        value={info.name}
+                        onChange={changeInfo}
+                    />
+                    <label htmlFor="name">{translate.name}</label>
+                </div>
+                <div className="inputs">
+                    <input
+                        type="text"
+                        id="secondname"
+                        placeholder={translate.secondname}
+                        value={info.secondname}
+                        onChange={changeInfo}
+                    />
+                    <label htmlFor="secondname">{translate.secondname}</label>
+                </div>
+                <div className="inputs">
+                    <input
+                        type="text"
+                        id="phone"
+                        placeholder={translate.phone}
+                        value={info.phone}
+                        onChange={changeInfo}
+                    />
+                    <label htmlFor="phone">{translate.phone}</label>
+                </div>
+                {delivery !== "np" && (
+                    <div className="inputs">
+                        <input
+                            type="text"
+                            id="address"
+                            placeholder={translate.address}
+                            value={info.address}
+                            onChange={changeInfo}
+                        />
+                        <label htmlFor="address">{translate.address}</label>
+                    </div>
+                )}
+
+                {delivery === "np" && (
+                    <div className="inputs">
+                        <Select
+                            className="np-input"
+                            classNamePrefix="select"
+                            // defaultValue={colourOptions[0]}
+                            isLoading={isLoadingNp}
+                            isClearable={true}
+                            isSearchable={true}
+                            name="cities"
+                            placeholder={language === "ua" ? "Місто" : "Город"}
+                            noOptionsMessage={() =>
+                                language === "ua"
+                                    ? "Почніть вводити назву вашого міста"
+                                    : "Начните вводить название вашего города"
+                            }
+                            options={listCitiesNp}
+                            onChange={selectCityOfNp}
+                            onInputChange={getCitiesOfNp}
+                        />
+
+                        <Select
+                            className="np-input"
+                            classNamePrefix="select"
+                            // defaultValue={colourOptions[0]}
+                            isLoading={isLoadingNp}
+                            isClearable={true}
+                            isSearchable={true}
+                            name="cities"
+                            placeholder={
+                                language === "ua" ? "Відділення" : "Отделение"
+                            }
+                            noOptionsMessage={() =>
+                                language === "ua"
+                                    ? "Виберіть місто"
+                                    : "Выберите город"
+                            }
+                            options={listWarhousesNp}
+                            onChange={selectWarehouseOfNp}
+                        />
+                    </div>
+                )}
+
                 <div className="inputs-radio">
                     <h2>{translate.payMethod}</h2>
                     <div className="radio">
@@ -134,19 +222,72 @@ export default function UserInfo() {
         </div>
     );
 
+    function selectWarehouseOfNp(val) {
+        // console.log(val);
+        setSelectedWarehouseNp(val);
+    }
+    function selectCityOfNp(val) {
+        // console.log(val);
+        setSelectedCityNp(val);
+    }
+
+    function getCitiesOfNp(val) {
+        if (val.length < 3) {
+            setListCitiesNp([]);
+        } else {
+            setIsLoading(true);
+            publicRequest
+                .get("/np/city", { params: { city: val, language } })
+                .then(({ data }) => {
+                    if (data.cities.length > 0) {
+                        setListCitiesNp(
+                            data.cities.map((item) => ({
+                                value: item.ref,
+                                label: item[`city_${language}`],
+                            }))
+                        );
+                    } else {
+                        setListCitiesNp([]);
+                    }
+                    setIsLoading(false);
+                    // console.log(data);
+                })
+                .catch((err) => {
+                    console.log(err);
+                });
+        }
+        // console.log(val);
+    }
+
     function createOrder() {
         if (!checkInfo()) return;
 
-        const buy = JSON.parse(Cookies.get("buy"));
+        // console.log(delivery);
+        // console.log(selectedCityNp);
+        // console.log(selectedWarehouseNp);
+        const userForOrder = {
+            ...info,
+        };
 
+        if (delivery === "np") {
+            userForOrder.address =
+                selectedWarehouseNp.city_ua +
+                " " +
+                selectedWarehouseNp.warehouse_ua;
+        }
+        // return "";
+        const buy = JSON.parse(Cookies.get("buy"));
         // console.log(buy);
         if (pay !== "card") {
             const order = {
-                user: { ...info },
+                user: { ...userForOrder },
                 delivery,
                 pay,
                 status: "new",
             };
+
+            // console.log(order);
+            // return;
             let products = [];
             for (const key in buy) {
                 const productInfo = {
@@ -216,6 +357,9 @@ export default function UserInfo() {
         }
         if (delivery !== "np" && info.address.length < 5) {
             toast.warning(translate.alerts.phone);
+            return false;
+        }
+        if ((delivery === "np" && !selectedCityNp) || !selectedWarehouseNp) {
             return false;
         }
         return true;
