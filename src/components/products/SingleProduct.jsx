@@ -231,7 +231,7 @@ function SingleProduct(props) {
 
     function renderDots() {
         // console.log(product.imgs);
-        if (product.imgs.length < 1) {
+        if (product.imgs.length <= 1) {
             return "";
         } else {
             return product.imgs.map((item, index) => {

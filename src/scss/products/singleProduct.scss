@@ -11,10 +11,40 @@
             box-sizing: border-box;
             max-height: 800px;
             min-height: 800px;
+            position: relative;
             img {
                 width: 100%;
                 height: 100%;
                 object-fit: cover;
+            }
+            .img-layer-contoller {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                left: 0;
+                top: 0;
+                .dots {
+                    display: flex;
+                    position: absolute;
+                    width: auto;
+                    align-items: center;
+                    justify-content: center;
+                    bottom: 25px;
+                    left: 50%;
+                    transform: translateX(-50%);
+                    .dot {
+                        width: 20px;
+                        height: 20px;
+                        // background: red;
+                        background: rgba($color: #000000, $alpha: 0.45);
+                        border: 1px solid rgba($color: #fff, $alpha: 0.45);
+                        border-radius: 50%;
+                        margin-right: 15px;
+                        &:last-child {
+                            margin-right: 0;
+                        }
+                    }
+                }
             }
         }
         .info {
@@ -206,6 +236,7 @@
                 max-height: 500px;
                 min-height: 500px;
                 margin-bottom: 20px;
+                position: relative;
                 img {
                     width: 100%;
                     height: 100%;
