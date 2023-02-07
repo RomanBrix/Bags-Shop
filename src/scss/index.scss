@@ -34,6 +34,7 @@ html {
                         }
                     }
                 }
+
                 .forContainer {
                     display: flex;
                     align-content: center;
@@ -88,6 +89,26 @@ html {
                 @import "./contacts/index.scss";
 
                 @import "./admin/index.scss";
+
+                .documents {
+                    min-height: calc(100vh - 131px - 82px);
+                    h1 {
+                        font-size: 3rem;
+                        @media (max-width: 767px) {
+                            font-size: 2rem;
+                        }
+                    }
+                    p {
+                        margin-bottom: 20px;
+                        letter-spacing: 0px;
+                        line-height: 26px;
+                        font-size: 18px;
+                        max-width: 80%;
+                        @media (max-width: 767px) {
+                            max-width: 100%;
+                        }
+                    }
+                }
             }
 
             // .header{

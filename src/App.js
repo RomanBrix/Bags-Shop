@@ -10,6 +10,7 @@ import MainPage from "./components/main";
 import Product from "./components/products";
 import SingleProduct from "./components/products/SingleProduct";
 import Success from "./components/Success";
+import Documents from "./components/documents";
 
 function App() {
     const location = useLocation();
@@ -29,9 +30,11 @@ function App() {
                     <Route path="/cart/*" element={<CartContainer />} />
                     <Route path="/contacts" element={<Contacts />} />
 
-                    <Route path="/return" element={<h1>return</h1>} />
-                    <Route path="/terms" element={<h1>terms</h1>} />
-                    <Route path="/delivery" element={<h1>delivery</h1>} />
+                    <Route path="/about" element={<Documents />} />
+
+                    <Route path="/return" element={<Documents />} />
+                    <Route path="/terms" element={<Documents />} />
+                    {/* <Route path="/delivery" element={<Documents />} /> */}
 
                     <Route path="/success" element={<Success />} />
 

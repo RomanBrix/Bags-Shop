@@ -7,6 +7,7 @@ import Cookies from "js-cookie";
 import useTranslate from "../../hook/useTranslate";
 import { publicRequest } from "../../requestMethods";
 import { toast } from "react-toastify";
+import { ReactComponent as ArrowRightSvg } from "./svg/arrowRight.svg";
 
 function SingleProduct(props) {
     const id = useParams()["id"] || "all";
@@ -157,11 +158,19 @@ function SingleProduct(props) {
                     >
                         <MainImg />
                     </Suspense>
-                    <div className="img-layer-contoller">
-                        <div className="dots">{renderDots()}</div>
-                        <div className="left">{/* left */}</div>
-                        <div className="right">{/* right */}</div>
-                    </div>
+                    {product.imgs.length > 1 ? (
+                        <div className="img-layer-contoller">
+                            <div className="dots">{renderDots()}</div>
+                            <div className="left" onClick={prevPhoto}>
+                                <ArrowRightSvg />
+                            </div>
+                            <div className="right" onClick={nextPhoto}>
+                                <ArrowRightSvg />
+                            </div>
+                        </div>
+                    ) : (
+                        ""
+                    )}
                 </div>
                 <div className="info">
                     <h2>{product.title}</h2>
@@ -229,6 +238,27 @@ function SingleProduct(props) {
         </div>
     );
 
+    function prevPhoto() {
+        const active = product.imgs.indexOf(activeImg);
+        setActiveImg((prev) => {
+            if (active - 1 <= -1) {
+                return product.imgs[product.imgs.length - 1];
+            } else {
+                return product.imgs[active - 1];
+            }
+        });
+    }
+
+    function nextPhoto() {
+        const active = product.imgs.indexOf(activeImg);
+        setActiveImg((prev) => {
+            if (active + 1 >= product.imgs.length) {
+                return product.imgs[0];
+            } else {
+                return product.imgs[active + 1];
+            }
+        });
+    }
     function renderDots() {
         // console.log(product.imgs);
         if (product.imgs.length <= 1) {
@@ -237,10 +267,11 @@ function SingleProduct(props) {
             return product.imgs.map((item, index) => {
                 return (
                     <div
-                        className="dot"
+                        className={`dot ${item === activeImg ? "active" : ""}`}
                         key={index}
                         onClick={() => {
                             console.log(item);
+                            setActiveImg(item);
                         }}
                     />
                 );

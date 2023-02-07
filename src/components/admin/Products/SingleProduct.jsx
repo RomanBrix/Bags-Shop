@@ -10,6 +10,7 @@ import { ReactComponent as PlusSvg } from "./svg/plus.svg";
 
 export default function SingleProduct({ allFilters }) {
     const { id } = useParams();
+    const [fetchData, setFetchData] = useState(false);
     const [loading, setLoading] = useState(true);
     const [product, setProduct] = useState({
         title: "",
@@ -308,10 +309,14 @@ export default function SingleProduct({ allFilters }) {
             toast.warning("Добавьте хотя бы один вариант");
             return;
         }
-
+        if (fetchData) {
+            toast.warning("Данные загружаются подождите!");
+            return;
+        }
         //send data to server
         // console.log(e.preventDefault);
         // console.log(filesToUpload);
+        setFetchData(true);
         let bodyFormData = new FormData();
         if (filesToUpload.length > 0) {
             filesToUpload.forEach((file) => {
@@ -344,6 +349,8 @@ export default function SingleProduct({ allFilters }) {
                 console.log(res);
                 if (res.data.status) {
                     toast.success("Изминения сохранены!");
+                    setFetchData(false);
+
                     // setFilesToUpload([]);
                     // setProduct({
                     //     title: "",
@@ -368,6 +375,7 @@ export default function SingleProduct({ allFilters }) {
             .catch((err) => {
                 console.log(err);
                 toast.error("Произошла ошибка, обновите страницу и повторите");
+                setFetchData(false);
             });
         // products
     }
