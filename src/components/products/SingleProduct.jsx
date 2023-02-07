@@ -158,7 +158,7 @@ function SingleProduct(props) {
                         <MainImg />
                     </Suspense>
                     <div className="img-layer-contoller">
-                        <div className="dots">{/* dots */}</div>
+                        <div className="dots">{renderDots()}</div>
                         <div className="left">{/* left */}</div>
                         <div className="right">{/* right */}</div>
                     </div>
@@ -228,6 +228,25 @@ function SingleProduct(props) {
             </div>
         </div>
     );
+
+    function renderDots() {
+        // console.log(product.imgs);
+        if (product.imgs.length < 1) {
+            return "";
+        } else {
+            return product.imgs.map((item, index) => {
+                return (
+                    <div
+                        className="dot"
+                        key={index}
+                        onClick={() => {
+                            console.log(item);
+                        }}
+                    />
+                );
+            });
+        }
+    }
 
     function addtoCart() {
         // const activeVarian = document.getElementsByClassName("active-variant");
